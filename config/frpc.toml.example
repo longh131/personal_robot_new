@@ -1,0 +1,11 @@
+serverAddr = "138.2.27.85"
+serverPort = 7000
+auth.method = "token"
+auth.token = "PASTE_FRPS_TOKEN_HERE"
+
+[[proxies]]
+name = "pi-web"
+type = "http"
+localIP = "127.0.0.1"
+localPort = 5000
+customDomains = ["pi.zwic.cn"]

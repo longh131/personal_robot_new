@@ -1,0 +1,4 @@
+safety_manager:
+  ros__parameters:
+    cmd_timeout: 0.30
+    rate_hz: 20.0

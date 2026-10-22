@@ -1,0 +1,60 @@
+# Site / hardware / behavior. Not identity, not secrets.
+# Change then restart scripts/start.sh.
+
+timezone: Asia/Shanghai
+idle_timeout_s: 130
+low_battery_pct: 10
+
+audio:
+  playback: plughw:Y1076,0
+  capture: plughw:Y1076,0
+
+ups:
+  i2c_bus: 1
+  i2c_addr: "0x2d"
+
+listen:
+  wait_s: 8
+  max_s: 12
+  silence_s: 0.8
+  rms: 500
+
+interrupt:
+  enabled: true
+  grace_s: 0.5
+  hold_s: 0.10
+  rms: 1400
+
+memory:
+  prompt_limit: 20
+
+media:
+  photos: /opt/personal_robot/data/media/remote/photos
+  videos: /opt/personal_robot/data/media/remote/videos
+  recordings: /opt/personal_robot/data/media/remote/recordings
+  sentry: /opt/personal_robot/data/media/remote/sentry
+  video_max_s: 60
+  audio_max_s: 60
+
+camera:
+  width: 640
+  height: 480
+  fps: 10
+
+gimbal:
+  enabled: false
+  model: MG90S
+
+remote:
+  vx_max: 0.15
+  vy_max: 0.15
+  wz_max: 0.40
+
+sentry:
+  enabled: true
+  threshold: 10
+  cooldown_s: 8
+  max_events_per_hour: 12
+  warmup_s: 2
+  clip_s: 10
+  buzzer: false

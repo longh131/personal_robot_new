@@ -1,0 +1,11 @@
+prefix=/opt/personal_robot/tools/rpi_camera
+includedir=${prefix}/include
+libdir=${prefix}/lib/aarch64-linux-gnu
+
+Name: rpicam_app
+Description: rpicam-apps: rpicam_app
+Version: 1.14.0
+Requires.private: libcamera, libexif, libjpeg, libtiff-4, libpng
+Libs: -L${libdir} -lrpicam_app
+Libs.private: /usr/lib/aarch64-linux-gnu/libboost_program_options.so.1.83.0 -pthread
+Cflags: -I${includedir}

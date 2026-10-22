@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/XMLSchema"?>
+<package format="3">
+  <name>command_bus</name>
+  <version>0.1.0</version>
+  <description>Skill ID bus. drive skill publishes /cmd_vel_remote. Does not open C30D serial.</description>
+  <maintainer email="andylong@todo.todo">andylong</maintainer>
+  <license>Apache-2.0</license>
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <test_depend>python3-pytest</test_depend>
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

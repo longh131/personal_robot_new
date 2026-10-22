@@ -1,0 +1,6 @@
+{
+  "username": "andylong",
+  "password_salt": "replace-with-scripts-set_remote_password",
+  "password_hash": "replace-with-scripts-set_remote_password",
+  "heartbeat_timeout_s": 8
+}

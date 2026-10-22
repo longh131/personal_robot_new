@@ -1,0 +1,10 @@
+prefix=/opt/personal_robot/tools/rpi_camera
+includedir=${prefix}/include
+libdir=${prefix}/lib/aarch64-linux-gnu
+
+Name: libpisp
+Description: PiSP Library
+Version: 1.7.0
+Libs: -L${libdir} -lpisp
+Libs.private: -pthread -ldl
+Cflags: -I${includedir} -I${includedir}/libpisp

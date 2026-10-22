@@ -1,0 +1,12 @@
+c30d_driver:
+  ros__parameters:
+    port: /dev/c30d
+    baud: 115200
+    cmd_timeout: 0.30
+    rate_hz: 20.0
+    scale: 300.0
+    count_limit: 120
+    halt_send_zero: true
+    cmd_topic: /cmd_vel_safe
+    odom_frame: odom
+    base_frame: base_link

@@ -1,0 +1,382 @@
+const loginView = document.getElementById("loginView");
+const panelView = document.getElementById("panelView");
+const loginErr = document.getElementById("loginErr");
+const msg = document.getElementById("msg");
+
+async function api(path, body) {
+  const opt = { method: body ? "POST" : "GET", credentials: "same-origin", headers: {} };
+  if (body) {
+    opt.headers["Content-Type"] = "application/json; charset=utf-8";
+    opt.body = JSON.stringify(body);
+  }
+  const res = await fetch(path, opt);
+  const data = await res.json().catch(() => ({}));
+  return { res, data };
+}
+
+function showPanel(on) {
+  loginView.hidden = on;
+  panelView.hidden = !on;
+}
+
+let pc = null;
+let talkOn = false;
+
+function paintState(s) {
+  document.getElementById("stMode").textContent = s.mode;
+  document.getElementById("stEstop").textContent = s.estop ? "锁存" : "否";
+  const pill = document.getElementById("modePill");
+  pill.textContent = s.mode;
+  pill.classList.toggle("remote", s.mode === "REMOTE");
+  const bat = s.battery;
+  const batText = bat ? `${bat.pct}% ${bat.state}` : "--";
+  document.getElementById("stBat").textContent = batText;
+  document.getElementById("batPill").textContent = bat ? `电量 ${bat.pct}%` : "电量 --";
+  const media = s.media || {};
+  document.getElementById("stVidMax").textContent = media.video_max_s ? `${media.video_max_s}s` : "-";
+  document.getElementById("stRecMax").textContent = media.audio_max_s ? `${media.audio_max_s}s` : "-";
+  document.getElementById("btnVid").classList.toggle("on", !!media.video);
+  document.getElementById("btnRec").classList.toggle("on", !!media.audio);
+  document.getElementById("btnTalk").classList.toggle("on", talkOn);
+  const d = s.drive || {};
+  const mot = document.getElementById("stMotion");
+  if (mot && !driveHeld) {
+    mot.textContent = s.motion
+      ? `按住 vx≤${d.vx_max ?? "-"} vy≤${d.vy_max ?? "-"}`
+      : "未批准";
+  }
+}
+
+async function refresh() {
+  const { data } = await api("/api/state");
+  if (!data.authed) {
+    showPanel(false);
+    return;
+  }
+  showPanel(true);
+  paintState(data);
+}
+
+document.getElementById("btnLogin").onclick = async () => {
+  loginErr.hidden = true;
+  const { res, data } = await api("/api/login", {
+    username: document.getElementById("user").value,
+    password: document.getElementById("pass").value,
+  });
+  if (!res.ok) {
+    loginErr.hidden = false;
+    loginErr.textContent = data.error || "登录失败";
+    return;
+  }
+  showPanel(true);
+  refresh();
+  startRtc(false);
+};
+
+document.getElementById("btnLogout").onclick = async () => {
+  releaseDrive();
+  if (pc) {
+    pc.close();
+    pc = null;
+  }
+  talkOn = false;
+  document.getElementById("btnTalk").classList.remove("on");
+  document.getElementById("btnVid").classList.remove("on");
+  document.getElementById("btnRec").classList.remove("on");
+  await api("/api/logout", {});
+  showPanel(false);
+};
+
+document.getElementById("btnEstop").onclick = async () => {
+  releaseDrive();
+  await api("/api/estop", {});
+  msg.hidden = false;
+  msg.textContent = "已请求软件急停并退出 REMOTE";
+  showPanel(false);
+};
+
+document.getElementById("btnPing").onclick = async () => {
+  const { res } = await api("/api/ping", {});
+  msg.hidden = false;
+  msg.textContent = res.ok ? "已发 ping" : "ping 失败";
+};
+
+function banner(text) {
+  msg.hidden = false;
+  msg.textContent = text;
+}
+
+function waitIce(peer) {
+  if (peer.iceGatheringState === "complete") return Promise.resolve();
+  return new Promise((resolve) => {
+    const t = setTimeout(resolve, 2000);
+    peer.onicegatheringstatechange = () => {
+      if (peer.iceGatheringState === "complete") {
+        clearTimeout(t);
+        resolve();
+      }
+    };
+  });
+}
+
+async function startRtc(withMic) {
+  if (pc) {
+    pc.close();
+    pc = null;
+  }
+  talkOn = withMic;
+  const live = document.getElementById("live");
+  const jpg = document.getElementById("liveJpg");
+  pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+  pc.ontrack = (ev) => {
+    live.srcObject = ev.streams[0];
+    live.muted = !withMic;
+    jpg.hidden = true;
+    live.hidden = false;
+  };
+  pc.addTransceiver("video", { direction: "recvonly" });
+  pc.addTransceiver("audio", { direction: withMic ? "sendrecv" : "recvonly" });
+  if (withMic) {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    stream.getAudioTracks().forEach((t) => pc.addTrack(t, stream));
+  }
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+  await waitIce(pc);
+  const { res, data } = await api("/api/rtc", {
+    sdp: pc.localDescription.sdp,
+    type: pc.localDescription.type,
+  });
+  if (!res.ok) {
+    banner("WebRTC 失败，改用静图预览");
+    document.getElementById("rtcHint").textContent = "静图预览";
+    fallbackJpg();
+    return;
+  }
+  await pc.setRemoteDescription({ sdp: data.sdp, type: data.type });
+  document.getElementById("rtcHint").textContent = withMic ? "通话中" : "预览已连接";
+  document.getElementById("btnTalk").classList.toggle("on", withMic);
+}
+
+function fallbackJpg() {
+  const live = document.getElementById("live");
+  const jpg = document.getElementById("liveJpg");
+  live.hidden = true;
+  jpg.hidden = false;
+  jpg.src = "/api/preview.jpg?t=" + Date.now();
+}
+
+document.getElementById("btnTalk").onclick = async () => {
+  try {
+    await startRtc(!talkOn);
+  } catch (err) {
+    banner(String(err));
+    fallbackJpg();
+  }
+};
+
+document.getElementById("btnPhoto").onclick = async () => {
+  const btn = document.getElementById("btnPhoto");
+  btn.classList.add("on");
+  const { res, data } = await api("/api/photo", {});
+  banner(res.ok ? "已拍照" : data.error || "拍照失败");
+  setTimeout(() => btn.classList.remove("on"), 400);
+};
+document.getElementById("btnVid").onclick = async () => {
+  const on = document.getElementById("btnVid").classList.contains("on");
+  const { res, data } = await api(on ? "/api/video/stop" : "/api/video/start", {});
+  if (!res.ok) {
+    banner(data.error || "录像失败");
+    return;
+  }
+  document.getElementById("btnVid").classList.toggle("on", !on);
+  banner(on ? "录像结束" : "录像中");
+};
+document.getElementById("btnRec").onclick = async () => {
+  const on = document.getElementById("btnRec").classList.contains("on");
+  const { res, data } = await api(on ? "/api/audio/stop" : "/api/audio/start", {});
+  if (!res.ok) {
+    banner(data.error || "录音失败");
+    return;
+  }
+  document.getElementById("btnRec").classList.toggle("on", !on);
+  banner(on ? "录音结束" : "录音中");
+};
+
+function fsEl() {
+  return document.fullscreenElement || document.webkitFullscreenElement;
+}
+function syncFsBtn() {
+  const on = !!fsEl();
+  document.getElementById("btnFs").classList.toggle("on-fs", on);
+  document.getElementById("btnFs").title = on ? "缩小" : "最大化";
+}
+document.getElementById("btnFs").onclick = async () => {
+  const stage = document.getElementById("stage");
+  const live = document.getElementById("live");
+  try {
+    if (fsEl()) {
+      if (document.exitFullscreen) await document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } else if (stage.requestFullscreen) {
+      await stage.requestFullscreen();
+    } else if (stage.webkitRequestFullscreen) {
+      stage.webkitRequestFullscreen();
+    } else if (live.webkitEnterFullscreen) {
+      live.webkitEnterFullscreen();
+    }
+  } catch (err) {
+    banner(String(err));
+  }
+  syncFsBtn();
+};
+document.addEventListener("fullscreenchange", syncFsBtn);
+document.addEventListener("webkitfullscreenchange", syncFsBtn);
+
+function gim(dir) {
+  return async () => {
+    const { data } = await api("/api/gimbal", { dir });
+    banner(data.hint || data.error || dir);
+  };
+}
+document.getElementById("gimUp").onclick = gim("up");
+document.getElementById("gimDown").onclick = gim("down");
+document.getElementById("gimLeft").onclick = gim("left");
+document.getElementById("gimRight").onclick = gim("right");
+document.getElementById("gimStop").onclick = gim("stop");
+
+setInterval(() => {
+  const jpg = document.getElementById("liveJpg");
+  if (!jpg || jpg.hidden || panelView.hidden) return;
+  jpg.src = "/api/preview.jpg?t=" + Date.now();
+}, 400);
+
+setInterval(async () => {
+  if (panelView.hidden) return;
+  const { res } = await api("/api/heartbeat", {});
+  if (!res.ok) showPanel(false);
+  else refresh();
+}, 3000);
+
+let driveTimer = null;
+let driveCmd = { vx: 0, vy: 0, wz: 0 };
+let driveHeld = null;
+const driveBtns = ["drvFwd", "drvBack", "drvLeft", "drvRight", "drvYawL", "drvYawR", "drvStop"];
+
+function markHold(id) {
+  driveBtns.forEach((k) => document.getElementById(k)?.classList.toggle("hold", k === id));
+}
+
+function driveLabel(cmd) {
+  if (!cmd.vx && !cmd.vy && !cmd.wz) return "已停发";
+  if (cmd.vx > 0) return "前进";
+  if (cmd.vx < 0) return "后退";
+  if (cmd.vy > 0) return "左移";
+  if (cmd.vy < 0) return "右移";
+  if (cmd.wz > 0) return "左转";
+  if (cmd.wz < 0) return "右转";
+  return "转动";
+}
+
+async function sendDrive(cmd) {
+  const { res, data } = await api("/api/drive", cmd);
+  const mot = document.getElementById("stMotion");
+  if (!res.ok) {
+    banner(data.error || "发送失败");
+    if (mot) mot.textContent = data.error || "发送失败";
+    return;
+  }
+  const moving = !!(cmd.vx || cmd.vy || cmd.wz);
+  const text = moving
+    ? `${driveLabel(cmd)} vx=${data.vx ?? cmd.vx} wz=${data.wz ?? cmd.wz}`
+    : "已停发";
+  banner(text);
+  if (mot) mot.textContent = moving ? driveLabel(cmd) : "按住行走";
+}
+
+function holdDrive(id, vx, vy, wz) {
+  if (driveHeld === id && driveTimer) return;
+  driveHeld = id;
+  driveCmd = { vx, vy, wz };
+  markHold(id);
+  sendDrive(driveCmd);
+  if (driveTimer) clearInterval(driveTimer);
+  driveTimer = setInterval(() => sendDrive(driveCmd), 400);
+}
+
+function releaseDrive() {
+  if (!driveHeld && !driveTimer) return;
+  if (driveTimer) {
+    clearInterval(driveTimer);
+    driveTimer = null;
+  }
+  driveHeld = null;
+  driveCmd = { vx: 0, vy: 0, wz: 0 };
+  markHold(null);
+  sendDrive(driveCmd);
+}
+
+function bindHold(id, vx, vy, wz) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const down = (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    if (typeof ev.button === "number" && ev.button !== 0) return;
+    holdDrive(id, vx, vy, wz);
+  };
+  el.addEventListener("pointerdown", down);
+  el.addEventListener("touchstart", down, { passive: false });
+  el.addEventListener("mousedown", down);
+  el.addEventListener("contextmenu", (ev) => ev.preventDefault());
+  el.addEventListener("selectstart", (ev) => ev.preventDefault());
+}
+bindHold("drvFwd", 1, 0, 0);
+bindHold("drvBack", -1, 0, 0);
+bindHold("drvLeft", 0, 1, 0);
+bindHold("drvRight", 0, -1, 0);
+bindHold("drvYawL", 0, 0, 1);
+bindHold("drvYawR", 0, 0, -1);
+document.getElementById("drvStop")?.addEventListener("pointerdown", (ev) => {
+  ev.preventDefault();
+  releaseDrive();
+});
+document.getElementById("drivePad")?.addEventListener("selectstart", (ev) => ev.preventDefault());
+const keyMap = {
+  KeyW: ["drvFwd", 1, 0, 0],
+  ArrowUp: ["drvFwd", 1, 0, 0],
+  KeyS: ["drvBack", -1, 0, 0],
+  ArrowDown: ["drvBack", -1, 0, 0],
+  KeyA: ["drvLeft", 0, 1, 0],
+  ArrowLeft: ["drvLeft", 0, 1, 0],
+  KeyD: ["drvRight", 0, -1, 0],
+  ArrowRight: ["drvRight", 0, -1, 0],
+  KeyQ: ["drvYawL", 0, 0, 1],
+  KeyE: ["drvYawR", 0, 0, -1],
+};
+document.addEventListener("keydown", (ev) => {
+  if (panelView.hidden) return;
+  if (ev.repeat) return;
+  if (ev.code === "Space") {
+    ev.preventDefault();
+    releaseDrive();
+    return;
+  }
+  const spec = keyMap[ev.code];
+  if (!spec) return;
+  ev.preventDefault();
+  holdDrive(...spec);
+});
+document.addEventListener("keyup", (ev) => {
+  if (!keyMap[ev.code]) return;
+  releaseDrive();
+});
+window.addEventListener("pointerup", releaseDrive);
+window.addEventListener("mouseup", releaseDrive);
+window.addEventListener("touchend", releaseDrive);
+window.addEventListener("blur", releaseDrive);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) releaseDrive();
+});
+
+refresh();

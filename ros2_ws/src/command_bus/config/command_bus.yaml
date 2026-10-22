@@ -1,0 +1,7 @@
+command_bus:
+  ros__parameters:
+    motion_enabled: true
+    vx_max: 0.15
+    vy_max: 0.15
+    wz_max: 0.40
+    drive_timeout: 1.0

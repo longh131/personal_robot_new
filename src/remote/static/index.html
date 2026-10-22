@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Personal Robot</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div id="loginView" class="screen">
+    <div class="card">
+      <div class="logo" aria-label="Personal Robot">
+        <span class="logo-mark">PR</span>
+        <span class="logo-text">
+          <span class="logo-name">Personal Robot</span>
+          <span class="logo-sub">REMOTE</span>
+        </span>
+      </div>
+      <h1>远程接入</h1>
+      <p class="muted">登录后进入 REMOTE，唤醒通道关闭。</p>
+      <label>用户名<input id="user" autocomplete="username" /></label>
+      <label>密码<input id="pass" type="password" autocomplete="current-password" /></label>
+      <p id="loginErr" class="err" hidden></p>
+      <button id="btnLogin" class="primary">登录</button>
+    </div>
+  </div>
+
+  <div id="panelView" class="screen" hidden>
+    <header class="top">
+      <div class="logo logo-compact" aria-label="Personal Robot">
+        <span class="logo-mark">PR</span>
+        <span class="logo-text">
+          <span class="logo-name">Personal Robot</span>
+          <span id="modePill" class="pill">IDLE</span>
+        </span>
+      </div>
+      <div class="bat" id="batPill">电量 --</div>
+      <button id="btnLogout" class="ghost">退出</button>
+    </header>
+    <p id="msg" class="banner" hidden></p>
+
+    <section class="card stage-card">
+      <h2>监控 <span id="rtcHint" class="h2-sub">连接中</span></h2>
+      <div id="stage" class="stage">
+        <video id="live" playsinline autoplay muted></video>
+        <img id="liveJpg" alt="" hidden />
+        <div class="overlay" role="toolbar">
+          <button type="button" class="icon-btn" id="btnTalk" title="通话" aria-label="通话">
+            <svg viewBox="0 0 24 24"><path d="M6.5 4.5h3l1 4-2 1.5a12 12 0 0 0 6.5 6.5l1.5-2 4 1v3c0 .8-.7 1.5-1.5 1.5C9 20 4 15 4 6c0-.8.7-1.5 1.5-1.5z"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="btnPhoto" title="拍照" aria-label="拍照">
+            <svg viewBox="0 0 24 24"><path d="M9 7 8 5H4v14h16V5h-4l-1 2H9zm3 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="btnVid" title="录像" aria-label="录像">
+            <svg viewBox="0 0 24 24"><path d="M4 7h11v10H4z"/><path d="m15 10 5-3v10l-5-3z"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="btnRec" title="录音" aria-label="录音">
+            <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M8 21h8"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="btnFs" title="最大化" aria-label="最大化">
+            <svg class="i-max" viewBox="0 0 24 24"><path d="M4 10V4h6M14 4h6v6M20 14v6h-6M10 20H4v-6"/><path d="m4 4 6 6M20 4l-6 6M20 20l-6-6M4 20l6-6"/></svg>
+            <svg class="i-min" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M4 15h5v5M20 15h-5v5"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>状态</h2>
+      <ul class="kv">
+        <li><span>模式</span><strong id="stMode">-</strong></li>
+        <li><span>急停</span><strong id="stEstop">-</strong></li>
+        <li><span>电量</span><strong id="stBat">-</strong></li>
+        <li><span>录像上限</span><strong id="stVidMax">-</strong></li>
+        <li><span>录音上限</span><strong id="stRecMax">-</strong></li>
+        <li><span>运动</span><strong id="stMotion">按住行走</strong></li>
+      </ul>
+      <button id="btnEstop" class="danger">软件急停</button>
+      <button id="btnPing" class="secondary">Bus ping</button>
+    </section>
+
+    <section class="card">
+      <h2>云台 MG90S</h2>
+      <div class="pad">
+        <span></span><button id="gimUp" type="button">上</button><span></span>
+        <button id="gimLeft" type="button">左</button><button id="gimStop" type="button">停</button><button id="gimRight" type="button">右</button>
+        <span></span><button id="gimDown" type="button">下</button><span></span>
+      </div>
+      <p class="muted">舵机尚未接入，按键只占位，不会转动。</p>
+    </section>
+
+    <section class="card">
+      <h2>运动</h2>
+      <div class="pad" id="drivePad">
+        <button type="button" id="drvYawL" draggable="false">左转</button>
+        <button type="button" id="drvFwd" draggable="false">前进</button>
+        <button type="button" id="drvYawR" draggable="false">右转</button>
+        <button type="button" id="drvLeft" draggable="false">左移</button>
+        <button type="button" id="drvStop" draggable="false">停</button>
+        <button type="button" id="drvRight" draggable="false">右移</button>
+        <span></span><button type="button" id="drvBack" draggable="false">后退</button><span></span>
+      </div>
+      <p class="muted">按住才走。WASD 平移，Q/E 转向。松开即停。走 Command Bus → Safety。不是工业急停。</p>
+    </section>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

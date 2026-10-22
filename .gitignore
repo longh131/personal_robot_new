@@ -1,0 +1,14 @@
+config/remote_auth.json
+config/frpc.toml
+.venv/
+data/models/wake/*.onnx
+data/memory/*.sqlite
+data/memory/*.sqlite-*
+*.tar.bz2
+**/__pycache__/
+*.pyc
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+config/cloud.env
+data/media/

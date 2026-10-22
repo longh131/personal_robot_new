@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/XMLSchema"?>
+<package format="3">
+  <name>ws_smoke</name>
+  <version>0.0.1</version>
+  <description>Phase 1 workspace smoke package. No hardware.</description>
+  <maintainer email="andylong@todo.todo">andylong</maintainer>
+  <license>Apache-2.0</license>
+  <depend>rclpy</depend>
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

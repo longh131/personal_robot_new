@@ -1,0 +1,8 @@
+# venv: python3 -m venv --system-site-packages /opt/personal_robot/.venv
+#   .venv/bin/pip install -r /opt/personal_robot/requirements.txt
+sherpa-onnx
+sherpa-onnx-bin
+dashscope
+PyYAML
+pypinyin
+aiortc

@@ -1,0 +1,2 @@
+# Wheeltec C30D USB serial (QinHeng CH343). Do not assume /dev/ttyACM0.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", ATTRS{serial}=="5C98181506", SYMLINK+="c30d", GROUP="dialout", MODE="0660"
