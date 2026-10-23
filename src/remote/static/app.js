@@ -127,12 +127,18 @@ async function startRtc(withMic) {
   talkOn = withMic;
   const live = document.getElementById("live");
   const jpg = document.getElementById("liveJpg");
+  const remoteStream = new MediaStream();
   pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
   pc.ontrack = (ev) => {
-    live.srcObject = ev.streams[0];
-    live.muted = !withMic;
+    if (!remoteStream.getTracks().some((t) => t.id === ev.track.id)) {
+      remoteStream.addTrack(ev.track);
+    }
+    live.srcObject = remoteStream;
+    live.muted = false;
+    live.volume = 1;
     jpg.hidden = true;
     live.hidden = false;
+    live.play().catch(() => {});
   };
   pc.addTransceiver("video", { direction: "recvonly" });
   pc.addTransceiver("audio", { direction: withMic ? "sendrecv" : "recvonly" });

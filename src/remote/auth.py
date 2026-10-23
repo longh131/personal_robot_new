@@ -18,7 +18,6 @@ def load_auth(path: Path = DEFAULT_PATH) -> dict:
     for key in ("username", "password_salt", "password_hash"):
         if key not in data:
             raise ValueError(f"auth file missing {key}")
-    data.setdefault("heartbeat_timeout_s", 8)
     return data
 
 
@@ -35,14 +34,13 @@ def verify_password(data: dict, username: str, password: str) -> bool:
     return secrets.compare_digest(expect, data["password_hash"])
 
 
-def write_auth(path: Path, username: str, password: str, heartbeat_timeout_s: int = 8) -> None:
+def write_auth(path: Path, username: str, password: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     salt, pw_hash = hash_password(password)
     body = {
         "username": username,
         "password_salt": salt,
         "password_hash": pw_hash,
-        "heartbeat_timeout_s": heartbeat_timeout_s,
     }
     path.write_text(json.dumps(body, indent=2) + "\n", encoding="utf-8")
     os.chmod(path, 0o600)

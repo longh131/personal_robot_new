@@ -16,7 +16,8 @@
 
 ## 远程登录密码
 
-网页登录不读明文密码，只读 `remote_auth.json` 里的盐和哈希。
+网页登录只读 `remote_auth.json` 的用户名和密码哈希，不含心跳。  
+REMOTE 心跳超时：`robot.yaml` 的 `remote.heartbeat_timeout_s`（秒，默认 30，至少 8）。经 FRP 容易卡，别设太短。改完重启 `start.sh`。
 
 设置或修改（至少 8 位，交互输入，终端不回显）：
 
@@ -56,7 +57,7 @@ python3 /opt/personal_robot/scripts/set_remote_password.py --user andylong
 - 拍照/录像/录音文件：`data/media/remote/`（路径在 `robot.yaml` 的 `media.photos` / `videos` / `recordings`）。
 - 录像、录音可按键开始/结束；不能超过 `video_max_s` / `audio_max_s`（秒）。
 - 预览：WebRTC。局域网可用；经 FRP 仅 TCP 时 ICE 可能失败，页面会回退 JPEG。
-- 通话：浏览器麦 ↔ 机器人喇叭/麦，**不含 ASR/TTS/LLM**。
+- 通话：浏览器麦 ↔ 机器人喇叭/麦，**不含 ASR/TTS/LLM**。登录 REMOTE 会先停唤醒麦，对讲采集 `audio.capture`。
 - 云台 MG90S：页面按键已留，`gimbal.enabled` 现为 false，不转舵机。
 - 网页底盘：按住才走，松开停发。网页只发 `drive` 技能，经 Command Bus → Safety，不直连串口。`start.sh` 不启电机。
 

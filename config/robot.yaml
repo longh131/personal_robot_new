@@ -49,6 +49,7 @@ remote:
   vx_max: 0.15
   vy_max: 0.15
   wz_max: 0.40
+  heartbeat_timeout_s: 30
 
 sentry:
   enabled: true

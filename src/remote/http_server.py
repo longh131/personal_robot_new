@@ -33,9 +33,12 @@ class RemoteGate:
         self.lock = threading.Lock()
         self.media = MediaSession()
         self.rtc = RtcSession(self.media.camera.latest_jpeg)
+        self.mic = None
 
     def timeout_s(self) -> float:
-        return float(self.auth.get("heartbeat_timeout_s", 8))
+        from settings import robot_get
+
+        return max(8.0, float(robot_get("remote", "heartbeat_timeout_s", default=30) or 30))
 
     def check_timeout(self) -> None:
         with self.lock:
@@ -71,6 +74,8 @@ class RemoteGate:
         with self.lock:
             self.token = token
             self.last_hb = time.monotonic()
+        if self.mic is not None:
+            self.mic.set_paused(True)
         self.events.put(Event.REMOTE_LOGIN)
         ros_bridge.mode_cmd("REMOTE")
         self.media.start_preview()

@@ -84,6 +84,8 @@ def main() -> int:
                 mic = None
             if sentry is not None:
                 sentry.mic = mic
+            if gate is not None:
+                gate.mic = mic
 
     def _stop(*_a: object) -> None:
         nonlocal stopping

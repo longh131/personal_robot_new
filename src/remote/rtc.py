@@ -27,6 +27,11 @@ class RtcSession:
 
     def _run(self) -> None:
         asyncio.set_event_loop(self._loop)
+
+        def _handler(_loop, ctx: dict) -> None:
+            log.warning("rtc loop: %s", ctx.get("message") or ctx)
+
+        self._loop.set_exception_handler(_handler)
         self._loop.run_forever()
 
     def close(self) -> None:
@@ -123,7 +128,8 @@ class RtcSession:
     def start_capture(self) -> subprocess.Popen:
         if self._cap is not None and self._cap.poll() is None:
             return self._cap
-        dev = "pipewire" if robot_get("interrupt", "enabled", default=True) else audio_device("capture")
+        dev = audio_device("capture")
+        log.info("rtc capture %s", dev)
         self._cap = subprocess.Popen(
             ["arecord", "-D", dev, "-f", "S16_LE", "-r", "16000", "-c", "1", "-t", "raw", "-q"],
             stdout=subprocess.PIPE,
