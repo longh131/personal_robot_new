@@ -116,6 +116,13 @@ class Store:
         self._db.commit()
         log.info("memory upsert kind=%s key=%s", kind, key)
 
+    def get(self, kind: str, key: str) -> sqlite3.Row | None:
+        row = self._db.execute(
+            "SELECT * FROM facts WHERE kind=? AND key=? AND valid=1",
+            (_slug(kind), _slug(key)),
+        ).fetchone()
+        return row
+
     def forget(self, kind: str, key: str) -> bool:
         cur = self._db.execute(
             "UPDATE facts SET valid=0, updated_at=? WHERE kind=? AND key=? AND valid=1",

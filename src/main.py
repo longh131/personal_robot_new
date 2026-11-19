@@ -107,8 +107,16 @@ def main() -> int:
 
     def on_mode(prev: str, now: str) -> None:
         if now == "AWAKE" and prev == "IDLE":
+            from awake.halt import mode_cmd
             from awake.talk import run_awake
 
+            # Sync Safety/Bus before any drive/follow; do not block greeting on ros2 CLI
+            threading.Thread(
+                target=mode_cmd,
+                args=("AWAKE",),
+                name="awake-mode",
+                daemon=True,
+            ).start()
             threading.Thread(
                 target=run_awake,
                 kwargs={"machine": machine, "session": awake, "cues": cues, "mic": mic},
@@ -121,8 +129,17 @@ def main() -> int:
             return
         if prev == "REMOTE" and now != "REMOTE" and mic is not None:
             mic.set_paused(False)
-        if prev == "AWAKE" and now != "AWAKE" and mic is not None:
-            mic.set_paused(False)
+        if prev == "AWAKE" and now != "AWAKE":
+            try:
+                from awake.halt import drive_stop, mode_cmd
+
+                drive_stop()
+                if now == "IDLE":
+                    mode_cmd("IDLE")
+            except Exception as exc:
+                log.warning("awake leave cleanup: %s", exc)
+            if mic is not None:
+                mic.set_paused(False)
 
     log.info("personal_ai started mode=%s (no motion)", machine.mode)
     try:
@@ -135,6 +152,9 @@ def main() -> int:
             should_stop=lambda: stopping,
         )
     finally:
+        from remote import gimbal
+
+        gimbal.shutdown(home=False)
         if httpd is not None:
             httpd.shutdown()
         if mic is not None:

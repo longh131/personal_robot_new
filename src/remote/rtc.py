@@ -5,10 +5,12 @@ from __future__ import annotations
 
 import asyncio
 import audioop
+import fractions
 import io
 import logging
 import subprocess
 import threading
+import time
 from collections.abc import Callable
 
 from settings import audio_device, robot_get
@@ -79,6 +81,21 @@ class RtcSession:
             def __init__(self) -> None:
                 super().__init__()
                 self._state = None
+
+            async def next_timestamp(self):
+                sample_rate = 48000
+                samples = 960
+                if self.readyState != "live":
+                    raise RuntimeError("track ended")
+                if hasattr(self, "_timestamp"):
+                    self._timestamp += samples
+                    wait = self._start + (self._timestamp / sample_rate) - time.time()
+                    if wait > 0:
+                        await asyncio.sleep(wait)
+                else:
+                    self._start = time.time()
+                    self._timestamp = 0
+                return self._timestamp, fractions.Fraction(1, sample_rate)
 
             async def recv(self):
                 pts, time_base = await self.next_timestamp()

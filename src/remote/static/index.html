@@ -35,7 +35,10 @@
           <span id="modePill" class="pill">IDLE</span>
         </span>
       </div>
-      <div class="bat" id="batPill">电量 --</div>
+      <div class="top-meta">
+        <div class="bat" id="batPill">电量 --</div>
+        <div class="link" id="linkPill">链路 --</div>
+      </div>
       <button id="btnLogout" class="ghost">退出</button>
     </header>
     <p id="msg" class="banner" hidden></p>
@@ -66,32 +69,53 @@
       </div>
     </section>
 
+    <section class="card" id="obsCard">
+      <h2>障碍物 <span id="obsHint" class="h2-sub">--</span></h2>
+      <div class="obs-grid" id="obsGrid">
+        <div class="obs-cell" data-dir="front"><span>前</span><strong id="obsFront">--</strong></div>
+        <div class="obs-cell" data-dir="rear"><span>后</span><strong id="obsRear">--</strong></div>
+        <div class="obs-cell" data-dir="left"><span>左</span><strong id="obsLeft">--</strong></div>
+        <div class="obs-cell" data-dir="right"><span>右</span><strong id="obsRight">--</strong></div>
+      </div>
+      <p id="obsStopBanner" class="obs-stop" hidden>已刹停（行驶方向障碍过近）</p>
+    </section>
+
     <section class="card">
       <h2>状态</h2>
       <ul class="kv">
         <li><span>模式</span><strong id="stMode">-</strong></li>
         <li><span>急停</span><strong id="stEstop">-</strong></li>
         <li><span>电量</span><strong id="stBat">-</strong></li>
+        <li><span>会话</span><strong id="stSession">-</strong></li>
         <li><span>录像上限</span><strong id="stVidMax">-</strong></li>
         <li><span>录音上限</span><strong id="stRecMax">-</strong></li>
         <li><span>运动</span><strong id="stMotion">按住行走</strong></li>
+        <li><span>云台</span><strong id="stGimbal">-</strong></li>
       </ul>
-      <button id="btnEstop" class="danger">软件急停</button>
+      <button id="btnEstop" class="danger estop-big" type="button">软件急停</button>
+      <p class="estop-note">操作按钮，非「当前已急停」。非工业硬件急停；锁存后需人工/重启恢复。空格只停车。</p>
       <button id="btnPing" class="secondary">Bus ping</button>
     </section>
 
     <section class="card">
       <h2>云台 MG90S</h2>
-      <div class="pad">
-        <span></span><button id="gimUp" type="button">上</button><span></span>
-        <button id="gimLeft" type="button">左</button><button id="gimStop" type="button">停</button><button id="gimRight" type="button">右</button>
-        <span></span><button id="gimDown" type="button">下</button><span></span>
+      <div class="pad" id="gimPad">
+        <span></span><button id="gimUp" type="button" draggable="false">上</button><span></span>
+        <button id="gimLeft" type="button" draggable="false">左</button>
+        <button id="gimStop" type="button" draggable="false">停</button>
+        <button id="gimRight" type="button" draggable="false">右</button>
+        <span></span><button id="gimDown" type="button" draggable="false">下</button><span></span>
       </div>
-      <p class="muted">舵机尚未接入，按键只占位，不会转动。</p>
+      <button id="gimHome" type="button" class="secondary">回中</button>
+      <p class="muted">按住上/下/左/右其一才转，不能同时按两个方向。松开停转、保持角度。回中先水平后俯仰。GPIO 19/26，独立 5V。IDLE 不转。</p>
     </section>
 
     <section class="card">
       <h2>运动</h2>
+      <label class="speed-label">限速 <strong id="speedLabel">100%</strong>
+        <input id="speedScale" type="range" min="20" max="100" step="5" value="100" />
+      </label>
+      <p class="muted" id="speedHint">有效上限 vx -- / vy -- / wz --</p>
       <div class="pad" id="drivePad">
         <button type="button" id="drvYawL" draggable="false">左转</button>
         <button type="button" id="drvFwd" draggable="false">前进</button>
@@ -102,6 +126,11 @@
         <span></span><button type="button" id="drvBack" draggable="false">后退</button><span></span>
       </div>
       <p class="muted">按住才走。WASD 平移，Q/E 转向。松开即停。走 Command Bus → Safety。不是工业急停。</p>
+    </section>
+
+    <section class="card">
+      <button id="btnMedia" type="button" class="secondary">查看媒体</button>
+      <p class="muted">新窗口浏览 REMOTE / sentry / AWAKE 照片与音视频。</p>
     </section>
   </div>
   <script src="/static/app.js"></script>

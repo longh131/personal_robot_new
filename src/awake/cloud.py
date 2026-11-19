@@ -77,29 +77,11 @@ _LLM_TOOLS = [
             "parameters": {"type": "object", "properties": {}},
         },
     },
-    {
-        "type": "function",
-        "function": {
-            "name": "remember_fact",
-            "description": "把主人的长期偏好或身份事实写入记忆。问句不要调用。",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "kind": {"type": "string", "description": "preference/person/habit/other"},
-                    "key": {"type": "string", "description": "如 drink、name"},
-                    "value": {"type": "string"},
-                    "text": {"type": "string", "description": "一句中文事实"},
-                },
-                "required": ["kind", "key", "value", "text"],
-            },
-        },
-    },
 ]
 
 
 def _run_tool(name: str, args: dict, cfg: dict[str, str], ident: dict) -> str:
     from awake.search import web_search
-    from awake.memory import get_store
     from awake.tools import get_battery, get_date, get_time
 
     if name == "web_search":
@@ -110,15 +92,6 @@ def _run_tool(name: str, args: dict, cfg: dict[str, str], ident: dict) -> str:
         return get_date(ident)
     if name == "get_battery":
         return get_battery(ident)
-    if name == "remember_fact":
-        get_store().upsert(
-            kind=str(args.get("kind") or "other"),
-            key=str(args.get("key") or "note"),
-            value=str(args.get("value") or ""),
-            text=str(args.get("text") or args.get("value") or ""),
-            source="tool",
-        )
-        return "已记住"
     return f"没有这个工具：{name}"
 
 
@@ -193,9 +166,9 @@ def llm_chat(
         f"你是名为{name}的个人机器人，称呼对方为{who}。"
         f"{persona}"
         "用一两句中文口语回答，不要列清单，不要提自己是大模型。"
-        "不会的事就直说。运动、底盘控制你做不了。"
+        "不会的事就直说。不要开车、不要改网页遥控。"
         "问几点用 get_time，问日期或星期用 get_date，电量用 get_battery，天气新闻用 web_search。"
-        "主人说出长期偏好时调用 remember_fact。回答口味、习惯、称呼时必须用系统里的长期事实，不要编。"
+        "不要擅自写入长期记忆。"
         "不要编造实时信息。"
     )
     from awake.memory import get_store
@@ -552,6 +525,8 @@ def tts_say(
     wav = Path(path)
     wav.write_bytes(raw)
     if not barge_in:
+        if bool(robot_get("interrupt", "enabled", default=True)):
+            play_dev = "pipewire"
         try:
             proc = subprocess.run(
                 ["aplay", "-D", play_dev, "-q", str(wav)],

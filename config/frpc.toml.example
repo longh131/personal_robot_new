@@ -1,5 +1,6 @@
 serverAddr = "138.2.27.85"
 serverPort = 7000
+transport.poolCount = 1
 auth.method = "token"
 auth.token = "PASTE_FRPS_TOKEN_HERE"
 

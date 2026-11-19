@@ -1,4 +1,4 @@
-"""ROS node: skill JSON in. drive → /cmd_vel_remote. Never opens serial."""
+"""ROS node: skill JSON in. drive → /cmd_vel_remote or /cmd_vel_awake. Never opens serial."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPolicy
 from std_msgs.msg import Bool, String
 
-from command_bus.validator import SKILL_DRIVE, CommandBus
+from command_bus.validator import AWAKE, REMOTE, SKILL_DRIVE, CommandBus
 
 CMD_QOS = QoSProfile(
     reliability=ReliabilityPolicy.RELIABLE,
@@ -41,10 +41,12 @@ class BusNode(Node):
         self.create_subscription(String, '/robot/skill_cmd', self._on_skill, 10)
         self.create_subscription(String, '/robot/skill_cancel', self._on_cancel, 10)
         self.pub_result = self.create_publisher(String, '/robot/skill_result', 10)
-        self.pub_twist = self.create_publisher(Twist, '/cmd_vel_remote', CMD_QOS)
+        self.pub_remote = self.create_publisher(Twist, '/cmd_vel_remote', CMD_QOS)
+        self.pub_awake = self.create_publisher(Twist, '/cmd_vel_awake', CMD_QOS)
         self.create_timer(0.05, self._on_timer)
         self.get_logger().info(
-            f'command_bus up motion_enabled={motion} drive via /cmd_vel_remote (no serial)'
+            f'command_bus up motion_enabled={motion} '
+            f'drive REMOTE→/cmd_vel_remote AWAKE→/cmd_vel_awake (no serial)'
         )
 
     def _on_mode(self, msg: String) -> None:
@@ -108,7 +110,17 @@ class BusNode(Node):
         msg.linear.x = self.bus.vx
         msg.linear.y = self.bus.vy
         msg.angular.z = self.bus.wz
-        self.pub_twist.publish(msg)
+        zero = Twist()
+        # Safety only accepts the topic matching current permit source
+        if self.bus.mode == AWAKE:
+            self.pub_awake.publish(msg)
+            self.pub_remote.publish(zero)
+        elif self.bus.mode == REMOTE:
+            self.pub_remote.publish(msg)
+            self.pub_awake.publish(zero)
+        else:
+            self.pub_remote.publish(zero)
+            self.pub_awake.publish(zero)
 
 
 def main() -> None:

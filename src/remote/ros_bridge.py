@@ -3,19 +3,28 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import shlex
 import subprocess
 import threading
+import time
 from pathlib import Path
 
 log = logging.getLogger("remote.ros")
 
-_SETUP = "source /opt/ros/jazzy/setup.bash"
+_SETUP = (
+    "source /opt/ros/jazzy/setup.bash && "
+    "source /opt/personal_robot/ros2_ws/install/setup.bash"
+)
 _SKILL = Path(__file__).resolve().parent / "skill_pub.py"
+_OBS_CACHE = Path("/opt/personal_robot/logs/remote_obstacle.json")
 _proc: subprocess.Popen | None = None
 _lock = threading.Lock()
+_speed_scale = 1.0
+_SCALE_MIN = 0.2
+_SCALE_MAX = 1.0
 
 
 def _pub(topic: str, typ: str, yaml_body: str) -> None:
@@ -34,7 +43,20 @@ def _pub(topic: str, typ: str, yaml_body: str) -> None:
 
 
 def mode_cmd(mode: str) -> None:
-    _pub("/robot/mode_cmd", "std_msgs/msg/String", "{data: %s}" % mode)
+    """Ask Safety for mode via ros2 topic pub --once (waits for subscriber)."""
+    target = (mode or "IDLE").strip().upper()
+    # Also nudge long-lived skill_pub if up; never skip the reliable --once path.
+    with _lock:
+        proc = _proc
+        if proc is not None and proc.poll() is None and proc.stdin is not None:
+            try:
+                proc.stdin.write(f"MODE {target}\n")
+                proc.stdin.flush()
+            except OSError as exc:
+                log.warning("mode_cmd skill_pub nudge failed: %s", exc)
+    _pub("/robot/mode_cmd", "std_msgs/msg/String", "{data: '%s'}" % target)
+    time.sleep(0.2)
+    log.info("mode_cmd via ros2 pub --once %s", target)
 
 
 def estop(latched: bool) -> None:
@@ -59,7 +81,39 @@ def _limits() -> tuple[float, float, float]:
 
 def motion_limits() -> dict:
     vx, vy, wz = _limits()
-    return {"vx_max": vx, "vy_max": vy, "wz_max": wz}
+    return {
+        "vx_max": vx,
+        "vy_max": vy,
+        "wz_max": wz,
+        "scale": _speed_scale,
+        "scale_min": _SCALE_MIN,
+        "scale_max": _SCALE_MAX,
+        "vx_eff": round(vx * _speed_scale, 4),
+        "vy_eff": round(vy * _speed_scale, 4),
+        "wz_eff": round(wz * _speed_scale, 4),
+    }
+
+
+def set_speed_scale(scale: float) -> dict:
+    global _speed_scale
+    _speed_scale = max(_SCALE_MIN, min(_SCALE_MAX, float(scale)))
+    return motion_limits()
+
+
+def obstacle_status() -> dict | None:
+    try:
+        if not _OBS_CACHE.is_file():
+            return None
+        data = json.loads(_OBS_CACHE.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            return None
+        ts = float(data.get("ts") or 0)
+        if ts and (time.time() - ts) > 2.0:
+            data = dict(data)
+            data["stale_ui"] = True
+        return data
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return None
 
 
 def _ensure_twist() -> subprocess.Popen | None:
@@ -80,6 +134,8 @@ def _ensure_twist() -> subprocess.Popen | None:
             env=env,
         )
         log.info("skill_pub pid=%s", _proc.pid)
+        # allow node to create pubs before first MODE/drive
+        time.sleep(0.4)
         return _proc
     except OSError as exc:
         log.warning("skill_pub start failed: %s", exc)
@@ -89,16 +145,26 @@ def _ensure_twist() -> subprocess.Popen | None:
 
 def drive(vx: float, vy: float, wz: float) -> dict:
     mx, my, mz = _limits()
-    vx = max(-mx, min(mx, float(vx)))
-    vy = max(-my, min(my, float(vy)))
-    wz = max(-mz, min(mz, float(wz)))
+    scale = _speed_scale
+    # UI sends unit fractions in [-1, 1]
+    fx = max(-1.0, min(1.0, float(vx)))
+    fy = max(-1.0, min(1.0, float(vy)))
+    fz = max(-1.0, min(1.0, float(wz)))
+    vx = fx * mx * scale
+    vy = fy * my * scale
+    wz = fz * mz * scale
     with _lock:
         proc = _ensure_twist()
         if proc is None or proc.stdin is None:
             raise RuntimeError("skill_pub unavailable")
         proc.stdin.write(f"{vx:.4f} {vy:.4f} {wz:.4f}\n")
         proc.stdin.flush()
-    return {"vx": vx, "vy": vy, "wz": wz}
+    return {"vx": vx, "vy": vy, "wz": wz, "scale": scale}
+
+
+def ensure_skill_pub() -> None:
+    with _lock:
+        _ensure_twist()
 
 
 def drive_stop() -> None:

@@ -11,10 +11,11 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, unquote, urlparse
 from runtime.events import Event
 from runtime.machine import Machine, Mode
 
-from . import gimbal, ros_bridge
+from . import gimbal, media_library, ros_bridge
 from .auth import load_auth, verify_password
 from .media import MediaSession
 from .rtc import RtcSession
@@ -58,6 +59,7 @@ class RemoteGate:
             log.warning("rtc leave: %s", exc)
         self.media.stop_all()
         ros_bridge.drive_stop()
+        gimbal.shutdown(home=True)
         self.events.put(Event.EXIT_TO_IDLE)
         ros_bridge.mode_cmd("IDLE")
 
@@ -66,19 +68,25 @@ class RemoteGate:
             return 401, {"ok": False, "error": "bad_credentials"}
         if self.machine.estop:
             return 403, {"ok": False, "error": "estop_latched"}
-        if self.machine.mode == Mode.AWAKE:
-            return 409, {"ok": False, "error": "awake_busy"}
         if self.machine.mode == Mode.FAULT:
             return 409, {"ok": False, "error": "fault_locked"}
+        # AWAKE↔REMOTE 不得互抢：须先退出 AWAKE 回 IDLE，再登录 REMOTE
+        if self.machine.mode == Mode.AWAKE:
+            return 409, {"ok": False, "error": "awake_busy"}
         token = secrets.token_urlsafe(24)
         with self.lock:
             self.token = token
             self.last_hb = time.monotonic()
         if self.mic is not None:
             self.mic.set_paused(True)
+        self.machine.apply(Event.REMOTE_LOGIN)
         self.events.put(Event.REMOTE_LOGIN)
+        # skill_pub first, then MODE via ros2 pub --once (reliable)
+        ros_bridge.ensure_skill_pub()
+        ros_bridge.set_speed_scale(1.0)
         ros_bridge.mode_cmd("REMOTE")
         self.media.start_preview()
+        gimbal.start()
         return 200, {"ok": True, "token": token, "user": username}
 
     def logout(self) -> None:
@@ -91,9 +99,22 @@ class RemoteGate:
             self.last_hb = time.monotonic()
             return True
 
+    def session_info(self) -> dict | None:
+        with self.lock:
+            if self.token is None:
+                return None
+            left = self.timeout_s() - (time.monotonic() - self.last_hb)
+            return {
+                "hb_left_s": max(0.0, round(left, 1)),
+                "timeout_s": round(self.timeout_s(), 1),
+                "exclusive": True,
+            }
+
 
 def _make_handler(gate: RemoteGate):
     class Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
         def log_message(self, fmt: str, *args: object) -> None:
             log.info("%s " + fmt, self.address_string(), *args)
 
@@ -143,17 +164,37 @@ def _make_handler(gate: RemoteGate):
             self.end_headers()
             self.wfile.write(data)
 
+        def _authed(self) -> bool:
+            tok = self._cookie_token()
+            return bool(tok) and tok == gate.token
+
+        def _send_file(self, path: Path, ctype: str, *, download: bool = False) -> None:
+            data = path.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store")
+            if download:
+                self.send_header("Content-Disposition", f'attachment; filename="{path.name}"')
+            self.end_headers()
+            self.wfile.write(data)
+
         def do_GET(self) -> None:
-            path = self.path.split("?", 1)[0]
+            parsed = urlparse(self.path)
+            path = parsed.path
+            qs = parse_qs(parsed.query)
             if path in ("/", "/index.html"):
                 return self._static("index.html", "text/html; charset=utf-8")
+            if path in ("/media", "/media.html"):
+                return self._static("media.html", "text/html; charset=utf-8")
             if path == "/static/app.js":
                 return self._static("app.js", "application/javascript; charset=utf-8")
+            if path == "/static/media.js":
+                return self._static("media.js", "application/javascript; charset=utf-8")
             if path == "/static/styles.css":
                 return self._static("styles.css", "text/css; charset=utf-8")
             if path == "/api/state":
-                tok = self._cookie_token()
-                authed = bool(tok) and tok == gate.token
+                authed = self._authed()
                 battery = None
                 if authed:
                     try:
@@ -172,12 +213,13 @@ def _make_handler(gate: RemoteGate):
                     "drive": ros_bridge.motion_limits(),
                     "battery": battery,
                     "media": gate.media.status() if authed else None,
-                    "gimbal": {"model": "MG90S", "connected": False},
+                    "gimbal": gimbal.status(),
+                    "session": gate.session_info() if authed else None,
+                    "obstacle": ros_bridge.obstacle_status() if authed else None,
                 }
                 return self._json(200, body)
             if path == "/api/preview.jpg":
-                tok = self._cookie_token()
-                if not tok or tok != gate.token:
+                if not self._authed():
                     self.send_error(401)
                     return
                 jpeg = gate.media.camera.latest_jpeg()
@@ -191,11 +233,37 @@ def _make_handler(gate: RemoteGate):
                 self.end_headers()
                 self.wfile.write(jpeg)
                 return
+            if path == "/api/media/categories":
+                if not self._authed():
+                    return self._json(401, {"ok": False, "error": "unauthorized"})
+                return self._json(200, media_library.list_categories())
+            if path == "/api/media/list":
+                if not self._authed():
+                    return self._json(401, {"ok": False, "error": "unauthorized"})
+                cat = unquote((qs.get("cat") or [""])[0])
+                out = media_library.list_category(cat)
+                return self._json(200 if out.get("ok") else 404, out)
+            if path == "/api/media/file":
+                if not self._authed():
+                    self.send_error(401)
+                    return
+                cat = unquote((qs.get("cat") or [""])[0])
+                name = unquote((qs.get("name") or [""])[0])
+                download = (qs.get("download") or ["0"])[0] in ("1", "true", "yes")
+                file_path = media_library.resolve_file(cat, name)
+                if file_path is None:
+                    self.send_error(404)
+                    return
+                return self._send_file(
+                    file_path,
+                    media_library.content_type(file_path),
+                    download=download,
+                )
             self.send_error(404)
 
         def do_POST(self) -> None:
+            body = self._read_json()
             if self.path == "/api/login":
-                body = self._read_json()
                 code, out = gate.login(str(body.get("username", "")), str(body.get("password", "")))
                 cookie = out.get("token") if code == 200 else ""
                 return self._json(code, out, set_cookie=cookie)
@@ -208,10 +276,26 @@ def _make_handler(gate: RemoteGate):
             if self.path == "/api/heartbeat":
                 if not gate.heartbeat(tok):
                     return self._json(401, {"ok": False, "error": "unauthorized"})
-                return self._json(200, {"ok": True, "mode": gate.machine.mode})
+                return self._json(
+                    200,
+                    {
+                        "ok": True,
+                        "mode": gate.machine.mode,
+                        "session": gate.session_info(),
+                        "obstacle": ros_bridge.obstacle_status(),
+                    },
+                )
+            if self.path == "/api/drive/scale":
+                try:
+                    scale = float(body.get("scale"))
+                except (TypeError, ValueError):
+                    return self._json(400, {"ok": False, "error": "bad_scale"})
+                limits = ros_bridge.set_speed_scale(scale)
+                return self._json(200, {"ok": True, **limits})
             if self.path == "/api/estop":
                 gate.machine.apply(Event.ESTOP)
                 ros_bridge.drive_stop()
+                gimbal.shutdown(home=False)
                 ros_bridge.estop(True)
                 gate.logout()
                 return self._json(200, {"ok": True, "estop": True})
@@ -244,18 +328,19 @@ def _make_handler(gate: RemoteGate):
                 return self._json(200, {"ok": True, "path": str(path) if path else ""})
             if self.path == "/api/rtc":
                 try:
-                    out = gate.rtc.answer(self._read_json())
+                    out = gate.rtc.answer(body)
                 except Exception as exc:
                     return self._json(500, {"ok": False, "error": str(exc)})
                 return self._json(200, out)
             if self.path == "/api/gimbal":
-                body = self._read_json()
+                if gate.machine.mode != Mode.REMOTE or gate.machine.estop:
+                    gimbal.move("stop")
+                    return self._json(409, {"ok": False, "error": "no_gimbal_permit"})
                 return self._json(200, gimbal.move(str(body.get("dir") or "stop")))
             if self.path == "/api/drive":
                 if gate.machine.mode != Mode.REMOTE or gate.machine.estop:
                     ros_bridge.drive_stop()
                     return self._json(409, {"ok": False, "error": "no_motion_permit"})
-                body = self._read_json()
                 try:
                     applied = ros_bridge.drive(
                         float(body.get("vx") or 0),
@@ -265,6 +350,11 @@ def _make_handler(gate: RemoteGate):
                 except Exception as exc:
                     return self._json(503, {"ok": False, "error": str(exc)})
                 return self._json(200, {"ok": True, **applied})
+            if self.path == "/api/media/delete":
+                cat = str(body.get("cat") or "")
+                name = str(body.get("name") or "")
+                out = media_library.delete_file(cat, name)
+                return self._json(200 if out.get("ok") else 404, out)
             self.send_error(404)
 
     return Handler

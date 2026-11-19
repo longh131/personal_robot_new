@@ -21,10 +21,92 @@ function showPanel(on) {
 
 let pc = null;
 let talkOn = false;
+let driveTimer = null;
+let driveCmd = { vx: 0, vy: 0, wz: 0 };
+let driveHeld = null;
+let lastRttMs = null;
+let scaleSyncing = false;
+
+function fmtDist(v) {
+  if (v == null || Number.isNaN(Number(v))) return "--";
+  return `${Number(v).toFixed(2)}m`;
+}
+
+function paintObstacle(obs) {
+  const hint = document.getElementById("obsHint");
+  const stop = document.getElementById("obsStopBanner");
+  const map = { front: "obsFront", rear: "obsRear", left: "obsLeft", right: "obsRight" };
+  if (!obs || obs.enabled === false) {
+    if (hint) hint.textContent = obs ? "未启用" : "无数据";
+    for (const id of Object.values(map)) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = "--";
+    }
+    if (stop) stop.hidden = true;
+    document.querySelectorAll(".obs-cell").forEach((el) => el.classList.remove("near", "hard"));
+    return;
+  }
+  const stale = !!obs.stale_ui || !obs.fresh;
+  if (hint) {
+    hint.textContent = obs.blocked
+      ? "已刹停"
+      : stale
+        ? "雷达陈旧"
+        : `阈 ${obs.stop_m ?? "-"}/${obs.hard_m ?? "-"}m`;
+  }
+  if (stop) stop.hidden = !obs.blocked;
+  const stopM = Number(obs.stop_m) || 0.45;
+  const hardM = Number(obs.hard_m) || 0.3;
+  for (const [dir, id] of Object.entries(map)) {
+    const el = document.getElementById(id);
+    const cell = el?.closest(".obs-cell");
+    const v = obs[dir];
+    if (el) el.textContent = fmtDist(v);
+    if (!cell) continue;
+    cell.classList.toggle("hard", v != null && v <= hardM);
+    cell.classList.toggle("near", v != null && v > hardM && v <= stopM);
+  }
+}
+
+function paintDriveLimits(d) {
+  if (!d) return;
+  const pct = Math.round((d.scale ?? 1) * 100);
+  const slider = document.getElementById("speedScale");
+  const label = document.getElementById("speedLabel");
+  const hint = document.getElementById("speedHint");
+  if (slider && !scaleSyncing && document.activeElement !== slider) {
+    slider.value = String(pct);
+  }
+  if (label) label.textContent = `${pct}%`;
+  if (hint) {
+    hint.textContent = `有效上限 vx ${d.vx_eff ?? "-"} / vy ${d.vy_eff ?? "-"} / wz ${d.wz_eff ?? "-"}（配置 ${d.vx_max}/${d.vy_max}/${d.wz_max}）`;
+  }
+}
+
+function paintSession(session) {
+  const st = document.getElementById("stSession");
+  const link = document.getElementById("linkPill");
+  const hb = session ? `${session.hb_left_s ?? "--"}s` : "--";
+  const rtt = lastRttMs != null ? `${lastRttMs}ms` : "--";
+  if (st) {
+    st.textContent = session
+      ? `心跳剩 ${hb} / ${session.timeout_s ?? "-"}s · 单会话`
+      : "-";
+  }
+  if (link) {
+    link.textContent = `链路 ${rtt} · 心跳 ${hb}`;
+    link.classList.toggle("warn", session != null && Number(session.hb_left_s) < 8);
+  }
+}
 
 function paintState(s) {
-  document.getElementById("stMode").textContent = s.mode;
-  document.getElementById("stEstop").textContent = s.estop ? "锁存" : "否";
+  const modeEl = document.getElementById("stMode");
+  if (modeEl) modeEl.textContent = s.mode;
+  const estopEl = document.getElementById("stEstop");
+  if (estopEl) {
+    estopEl.textContent = s.estop ? "锁存（需人工）" : "否";
+    estopEl.classList.toggle("estop-latched", !!s.estop);
+  }
   const pill = document.getElementById("modePill");
   pill.textContent = s.mode;
   pill.classList.toggle("remote", s.mode === "REMOTE");
@@ -38,11 +120,19 @@ function paintState(s) {
   document.getElementById("btnVid").classList.toggle("on", !!media.video);
   document.getElementById("btnRec").classList.toggle("on", !!media.audio);
   document.getElementById("btnTalk").classList.toggle("on", talkOn);
+  const g = s.gimbal || {};
+  const gimLine = document.getElementById("stGimbal");
+  if (gimLine) {
+    gimLine.textContent = g.connected ? (g.dir || "stop") : (g.error || "未接入");
+  }
   const d = s.drive || {};
+  paintDriveLimits(d);
+  paintSession(s.session);
+  paintObstacle(s.obstacle);
   const mot = document.getElementById("stMotion");
   if (mot && !driveHeld) {
     mot.textContent = s.motion
-      ? `按住 vx≤${d.vx_max ?? "-"} vy≤${d.vy_max ?? "-"}`
+      ? `按住 vx≤${d.vx_eff ?? d.vx_max ?? "-"}`
       : "未批准";
   }
 }
@@ -65,7 +155,11 @@ document.getElementById("btnLogin").onclick = async () => {
   });
   if (!res.ok) {
     loginErr.hidden = false;
-    loginErr.textContent = data.error || "登录失败";
+    const err = data.error || "登录失败";
+    loginErr.textContent =
+      err === "awake_busy"
+        ? "正在语音交互（AWAKE），请先说「再见」退出后再登录"
+        : err;
     return;
   }
   showPanel(true);
@@ -74,6 +168,7 @@ document.getElementById("btnLogin").onclick = async () => {
 };
 
 document.getElementById("btnLogout").onclick = async () => {
+  releaseGim();
   releaseDrive();
   if (pc) {
     pc.close();
@@ -88,18 +183,47 @@ document.getElementById("btnLogout").onclick = async () => {
 };
 
 document.getElementById("btnEstop").onclick = async () => {
+  if (!confirm("确认软件急停？将锁存并退出 REMOTE（非工业硬件急停）。")) return;
+  releaseGim();
   releaseDrive();
   await api("/api/estop", {});
   msg.hidden = false;
-  msg.textContent = "已请求软件急停并退出 REMOTE";
+  msg.textContent = "已请求软件急停并退出 REMOTE（锁存，需人工恢复）";
   showPanel(false);
 };
+
+const speedScale = document.getElementById("speedScale");
+let scaleTimer = null;
+speedScale?.addEventListener("input", () => {
+  document.getElementById("speedLabel").textContent = `${Number(speedScale.value)}%`;
+});
+speedScale?.addEventListener("change", () => {
+  const pct = Number(speedScale.value);
+  if (scaleTimer) clearTimeout(scaleTimer);
+  scaleTimer = setTimeout(async () => {
+    scaleSyncing = true;
+    const { res, data } = await api("/api/drive/scale", { scale: pct / 100 });
+    scaleSyncing = false;
+    if (!res.ok) {
+      banner(data.error || "限速失败");
+      return;
+    }
+    paintDriveLimits(data);
+  }, 80);
+});
 
 document.getElementById("btnPing").onclick = async () => {
   const { res } = await api("/api/ping", {});
   msg.hidden = false;
   msg.textContent = res.ok ? "已发 ping" : "ping 失败";
 };
+
+document.getElementById("btnMedia")?.addEventListener("click", () => {
+  const w = window.open("/media.html", "robot-media", "noopener,noreferrer");
+  if (!w) {
+    banner("浏览器拦截了弹窗，请允许后重试");
+  }
+});
 
 function banner(text) {
   msg.hidden = false;
@@ -239,34 +363,102 @@ document.getElementById("btnFs").onclick = async () => {
 document.addEventListener("fullscreenchange", syncFsBtn);
 document.addEventListener("webkitfullscreenchange", syncFsBtn);
 
-function gim(dir) {
-  return async () => {
-    const { data } = await api("/api/gimbal", { dir });
-    banner(data.hint || data.error || dir);
-  };
+let gimHeld = null;
+let gimTimer = null;
+const gimBtns = ["gimUp", "gimDown", "gimLeft", "gimRight", "gimStop"];
+
+function markGim(id) {
+  gimBtns.forEach((k) => document.getElementById(k)?.classList.toggle("hold", k === id));
 }
-document.getElementById("gimUp").onclick = gim("up");
-document.getElementById("gimDown").onclick = gim("down");
-document.getElementById("gimLeft").onclick = gim("left");
-document.getElementById("gimRight").onclick = gim("right");
-document.getElementById("gimStop").onclick = gim("stop");
+
+async function sendGim(dir) {
+  const { res, data } = await api("/api/gimbal", { dir });
+  if (!res.ok) {
+    banner(data.error || "云台失败");
+    return;
+  }
+  banner(dir === "stop" ? "云台停" : dir === "home" ? "云台回中" : `云台 ${dir}`);
+}
+
+function holdGim(id, dir) {
+  if (gimHeld) return;
+  gimHeld = id;
+  markGim(id);
+  sendGim(dir);
+}
+
+function releaseGim() {
+  const was = gimHeld || gimTimer;
+  if (gimTimer) {
+    clearInterval(gimTimer);
+    gimTimer = null;
+  }
+  gimHeld = null;
+  markGim(null);
+  if (was) sendGim("stop");
+}
+
+function stopGim() {
+  if (gimTimer) {
+    clearInterval(gimTimer);
+    gimTimer = null;
+  }
+  gimHeld = null;
+  markGim("gimStop");
+  sendGim("stop");
+}
+
+function bindGim(id, dir) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const down = (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    if (typeof ev.button === "number" && ev.button !== 0) return;
+    holdGim(id, dir);
+  };
+  el.addEventListener("pointerdown", down);
+  el.addEventListener("touchstart", down, { passive: false });
+  el.addEventListener("mousedown", down);
+  el.addEventListener("contextmenu", (ev) => ev.preventDefault());
+  el.addEventListener("selectstart", (ev) => ev.preventDefault());
+}
+bindGim("gimUp", "up");
+bindGim("gimDown", "down");
+bindGim("gimLeft", "left");
+bindGim("gimRight", "right");
+document.getElementById("gimStop")?.addEventListener("pointerdown", (ev) => {
+  ev.preventDefault();
+  ev.stopPropagation();
+  stopGim();
+});
+document.getElementById("gimHome")?.addEventListener("pointerdown", (ev) => {
+  ev.preventDefault();
+  releaseGim();
+  sendGim("home");
+});
+document.getElementById("gimPad")?.addEventListener("selectstart", (ev) => ev.preventDefault());
 
 setInterval(() => {
   const jpg = document.getElementById("liveJpg");
   if (!jpg || jpg.hidden || panelView.hidden) return;
   jpg.src = "/api/preview.jpg?t=" + Date.now();
-}, 400);
+}, 1200);
 
 setInterval(async () => {
   if (panelView.hidden) return;
-  const { res } = await api("/api/heartbeat", {});
-  if (!res.ok) showPanel(false);
-  else refresh();
+  const t0 = performance.now();
+  const { res, data } = await api("/api/heartbeat", {});
+  lastRttMs = Math.round(performance.now() - t0);
+  if (!res.ok) {
+    showPanel(false);
+    return;
+  }
+  paintSession(data.session);
+  paintObstacle(data.obstacle);
+  refresh();
 }, 3000);
 
-let driveTimer = null;
-let driveCmd = { vx: 0, vy: 0, wz: 0 };
-let driveHeld = null;
 const driveBtns = ["drvFwd", "drvBack", "drvLeft", "drvRight", "drvYawL", "drvYawR", "drvStop"];
 
 function markHold(id) {
@@ -377,12 +569,27 @@ document.addEventListener("keyup", (ev) => {
   if (!keyMap[ev.code]) return;
   releaseDrive();
 });
-window.addEventListener("pointerup", releaseDrive);
-window.addEventListener("mouseup", releaseDrive);
-window.addEventListener("touchend", releaseDrive);
-window.addEventListener("blur", releaseDrive);
+window.addEventListener("pointerup", () => {
+  releaseGim();
+  releaseDrive();
+});
+window.addEventListener("mouseup", () => {
+  releaseGim();
+  releaseDrive();
+});
+window.addEventListener("touchend", () => {
+  releaseGim();
+  releaseDrive();
+});
+window.addEventListener("blur", () => {
+  releaseGim();
+  releaseDrive();
+});
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) releaseDrive();
+  if (document.hidden) {
+    releaseGim();
+    releaseDrive();
+  }
 });
 
 refresh();

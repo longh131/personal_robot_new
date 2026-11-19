@@ -1,0 +1,9 @@
+lidar_follow:
+  ros__parameters:
+    enabled: false
+    target_m: 0.80
+    band_m: 0.12
+    vx_max: 0.12
+    front_deg: 40.0
+    rate_hz: 10.0
+    stale_s: 0.6

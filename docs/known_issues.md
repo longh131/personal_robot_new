@@ -86,6 +86,17 @@ Jazzy Desktop + 视频 + 本机 LLM 可能导致 OOM。后期推理优先远端�
 
 ## 产品范围（记录）
 
+### KI-016 云台 USB-A 5V 带不动双轴同时转
+
+MG90S 曾由 UPS USB-A 供电；现多已独立 5V。两轴同时转仍可能欠压。当前驱动单轴运动；`gpiozero`+`lgpio`，水平 BCM24、俯仰 BCM19。
+
+### KI-017 计划更换：云台舵机 + CSI 摄像头
+
+- 日期：2026-11-17。用户确认现舵机已可用，**计划换更好舵机**；现 OV5647 CSI **计划换更好摄像头**（曾出现 I2C `-121` 探头失败）。
+- 候选舵机（名称）：DS3225、Feetech STS3215、WaveShare ST3215、Dynamixel XL430-W250。
+- 候选摄像头（名称）：Raspberry Pi Camera Module 3、Camera Module 3 Wide、Arducam IMX519、Raspberry Pi HQ Camera。
+- 更换后须重测：云台引脚/供电、CSI/`rpicam`、REMOTE 预览与 AWAKE 拍照。
+
 ### KI-015 旧 Pi-Robot 架构不兼容
 
 旧项目电机插件可直控硬件。新架构禁止该路径。可参考状态互斥与语音流程，不可拷贝实现。
@@ -109,3 +120,5 @@ Jazzy Desktop + 视频 + 本机 LLM 可能导致 OOM。后期推理优先远端�
 | KI-013 | 运维 | 可选修复 vcio 或改用其他遥测 |
 | KI-014 | 保持 | 不改为免密 |
 | KI-015 | 保持 | 架构约束 |
+| KI-016 | 保持 | 单轴互斥；独立供电仍可能欠压 |
+| KI-017 | 采购后 | 换件并复测云台/相机 |

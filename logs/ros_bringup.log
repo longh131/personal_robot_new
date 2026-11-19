@@ -1,0 +1,663 @@
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-10-24-19-52-28-702794-andylong-desktop-70851
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [70874]
+[INFO] [c30d_node-2]: process started with pid [70875]
+[INFO] [bus_node-3]: process started with pid [70876]
+[bus_node-3] [INFO] [1792842749.890559335] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1792842749.899711572] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[c30d_node-2] [INFO] [1792842750.164094495] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1792842750.188409293] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-10-24-21-00-28-062205-andylong-desktop-79979
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [80001]
+[INFO] [c30d_node-2]: process started with pid [80002]
+[INFO] [bus_node-3]: process started with pid [80003]
+[c30d_node-2] [INFO] [1792846829.118904306] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1792846829.130313939] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[bus_node-3] [INFO] [1792846829.294332843] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1792846829.377678898] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[bus_node-3] [WARN] [1792847079.863142794] [command_bus]: skill rejected id=r9242724277060_2 reason=no_motion_permit
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-10-24-21-11-58-979614-andylong-desktop-85513
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [85532]
+[INFO] [c30d_node-2]: process started with pid [85533]
+[INFO] [bus_node-3]: process started with pid [85534]
+[safety_node-1] [WARN] [1792847519.976601991] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[bus_node-3] [INFO] [1792847519.980649225] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[c30d_node-2] [INFO] [1792847520.159888054] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1792847520.167421799] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-16-15-24-16-006882-andylong-desktop-3476
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [3517]
+[INFO] [c30d_node-2]: process started with pid [3518]
+[INFO] [bus_node-3]: process started with pid [3519]
+[bus_node-3] [INFO] [1794813857.484593910] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1794813857.486651217] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[c30d_node-2] [INFO] [1794813857.685074883] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1794813857.708788619] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-16-15-33-19-244616-andylong-desktop-29518
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [29541]
+[INFO] [c30d_node-2]: process started with pid [29542]
+[INFO] [bus_node-3]: process started with pid [29543]
+[safety_node-1] [WARN] [1794814400.301636332] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[bus_node-3] [INFO] [1794814400.380351265] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[c30d_node-2] [INFO] [1794814400.576057575] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1794814400.584959735] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-17-13-45-06-386716-andylong-desktop-5099
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [5136]
+[INFO] [c30d_node-2]: process started with pid [5137]
+[INFO] [bus_node-3]: process started with pid [5138]
+[bus_node-3] [INFO] [1794894307.965270963] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1794894307.972867291] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[c30d_node-2] [INFO] [1794894308.220745673] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1794894308.244895740] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-17-14-58-08-463753-andylong-desktop-2153
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [2248]
+[INFO] [c30d_node-2]: process started with pid [2249]
+[INFO] [bus_node-3]: process started with pid [2250]
+[bus_node-3] [INFO] [1794898690.514423003] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1794898690.526413119] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[c30d_node-2] [INFO] [1794898690.971891128] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1794898691.000488995] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-17-15-11-39-404517-andylong-desktop-37103
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [37122]
+[INFO] [c30d_node-2]: process started with pid [37123]
+[INFO] [bus_node-3]: process started with pid [37124]
+[bus_node-3] [INFO] [1794899500.479486720] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1794899500.491410576] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[c30d_node-2] [INFO] [1794899500.610297008] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1794899500.622341070] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-18-16-48-32-191714-andylong-desktop-2006
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [2099]
+[INFO] [c30d_node-2]: process started with pid [2100]
+[INFO] [bus_node-3]: process started with pid [2101]
+[INFO] [lidar_node-4]: process started with pid [2102]
+[INFO] [follow_node-5]: process started with pid [2103]
+[bus_node-3] [INFO] [1794991714.647353483] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1794991714.678652078] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1794991714.704329460] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1794991714.705410008] [safety_manager]: obstacle stop on /scan stop_m=0.4 hard_m=0.22 front_deg=50.0
+[lidar_node-4] [INFO] [1794991714.899744099] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1794991714.900096979] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[c30d_node-2] [ERROR] [1794991714.993551811] [c30d_driver]: serial open failed: [Errno 2] could not open port /dev/c30d: [Errno 2] No such file or directory: '/dev/c30d'
+[c30d_node-2] [WARN] [1794991715.068348544] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[lidar_node-4] [INFO] [1794991715.595414452] [lidar_node]: Skipping first partial scan...
+[safety_node-1] [WARN] [1794991731.220525725] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991731.571509451] [safety_manager]: obstacle stop front_min=0.21199999749660492 stop_m=0.4
+[safety_node-1] [WARN] [1794991732.220614752] [safety_manager]: obstacle stop front_min=0.21199999749660492 stop_m=0.4
+[safety_node-1] [WARN] [1794991732.871750593] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991733.220700686] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991733.570756583] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991733.870666085] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991734.220653506] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991734.573011185] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991735.070681165] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991735.870498648] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991736.370610691] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991736.870602860] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991737.370546880] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991738.070724826] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991738.720651728] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991739.220920596] [safety_manager]: obstacle stop front_min=0.21199999749660492 stop_m=0.4
+[safety_node-1] [WARN] [1794991739.570573388] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991740.070652699] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991740.370688063] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991740.871163699] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991741.370562610] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991741.870573945] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991742.370597087] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991743.070532523] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991743.720589080] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991744.070748148] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991744.370589260] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991744.870639099] [safety_manager]: obstacle stop front_min=0.210999995470047 stop_m=0.4
+[safety_node-1] [WARN] [1794991745.571314071] [safety_manager]: obstacle stop front_min=0.20900000631809235 stop_m=0.4
+[safety_node-1] [WARN] [1794991746.070707133] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991746.370590879] [safety_manager]: obstacle stop front_min=0.20900000631809235 stop_m=0.4
+[safety_node-1] [WARN] [1794991746.721603871] [safety_manager]: obstacle stop front_min=0.20900000631809235 stop_m=0.4
+[safety_node-1] [WARN] [1794991747.220798316] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991747.570813852] [safety_manager]: obstacle stop front_min=0.20999999344348907 stop_m=0.4
+[safety_node-1] [WARN] [1794991748.220659635] [safety_manager]: obstacle stop front_min=0.19900000095367432 stop_m=0.4
+[safety_node-1] [WARN] [1794991748.720633597] [safety_manager]: obstacle stop front_min=0.2029999941587448 stop_m=0.4
+[safety_node-1] [WARN] [1794991749.220549890] [safety_manager]: obstacle stop front_min=0.20399999618530273 stop_m=0.4
+[safety_node-1] [WARN] [1794991856.870652016] [safety_manager]: obstacle stop front_min=0.18799999356269836 stop_m=0.4
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-18-17-07-24-855196-andylong-desktop-17361
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [17383]
+[INFO] [c30d_node-2]: process started with pid [17384]
+[INFO] [bus_node-3]: process started with pid [17385]
+[INFO] [lidar_node-4]: process started with pid [17386]
+[INFO] [follow_node-5]: process started with pid [17387]
+[lidar_node-4] [INFO] [1794992845.561809199] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1794992845.562288521] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[bus_node-3] [INFO] [1794992846.004042048] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[lidar_node-4] [INFO] [1794992846.265548407] [lidar_node]: Skipping first partial scan...
+[safety_node-1] [WARN] [1794992846.321231343] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1794992846.322569049] [safety_manager]: obstacle stop on /scan stop_m=0.45 hard_m=0.3 front_deg=50.0 ignore_below_m=0.28 offset_deg=0.0
+[follow_node-5] [INFO] [1794992846.462978535] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [INFO] [1794992846.615528358] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1794992846.627874216] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[safety_node-1] [WARN] [1794992891.285126373] [safety_manager]: obstacle stop front_min=0.4129999876022339 stop_m=0.45
+[safety_node-1] [WARN] [1794992891.933842429] [safety_manager]: obstacle stop front_min=0.39500001072883606 stop_m=0.45
+[safety_node-1] [WARN] [1794992892.433757094] [safety_manager]: obstacle stop front_min=0.39500001072883606 stop_m=0.45
+[safety_node-1] [WARN] [1794992910.783756187] [safety_manager]: obstacle stop front_min=0.3779999911785126 stop_m=0.45
+[safety_node-1] [WARN] [1794992940.634453343] [safety_manager]: obstacle stop front_min=0.2800000011920929 stop_m=0.45
+[safety_node-1] [WARN] [1794992941.283900015] [safety_manager]: obstacle stop front_min=0.31700000166893005 stop_m=0.45
+[safety_node-1] [WARN] [1794992941.635040920] [safety_manager]: obstacle stop front_min=0.39500001072883606 stop_m=0.45
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-18-17-13-10-528722-andylong-desktop-30286
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [30305]
+[INFO] [c30d_node-2]: process started with pid [30306]
+[INFO] [bus_node-3]: process started with pid [30307]
+[INFO] [lidar_node-4]: process started with pid [30308]
+[INFO] [follow_node-5]: process started with pid [30309]
+[lidar_node-4] [INFO] [1794993191.111999179] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1794993191.112375532] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1794993191.113667889] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1794993191.915215407] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1794993191.961658900] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [INFO] [1794993192.233807551] [c30d_driver]: opened /dev/c30d @ 115200
+[safety_node-1] [WARN] [1794993192.240670485] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1794993192.243461162] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [WARN] [1794993192.245905431] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[safety_node-1] [WARN] [1794993219.862512291] [safety_manager]: obstacle stop rear:0.441 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993220.712588996] [safety_manager]: obstacle stop rear:0.421 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993222.362666208] [safety_manager]: obstacle stop rear:0.422 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993223.013368289] [safety_manager]: obstacle stop rear:0.424 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993224.414812616] [safety_manager]: obstacle stop rear:0.421 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993230.712575245] [safety_manager]: obstacle stop front:0.450 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993231.562523636] [safety_manager]: obstacle stop front:0.407 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993241.013010381] [safety_manager]: obstacle stop hard:front:0.292 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993242.212610777] [safety_manager]: obstacle stop hard:front:0.282 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993242.712546548] [safety_manager]: obstacle stop hard:front:0.281 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993243.515679381] [safety_manager]: obstacle stop front:0.367 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993246.363488078] [safety_manager]: obstacle stop front:0.430 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993246.862509042] [safety_manager]: obstacle stop hard:front:0.281 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993251.862618482] [safety_manager]: obstacle stop right:0.447 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993252.862497491] [safety_manager]: obstacle stop hard:right:0.282 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993266.712616220] [safety_manager]: obstacle stop rear:0.450 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1794993267.212589802] [safety_manager]: obstacle stop hard:rear:0.290 stop_m=0.45 hard_m=0.3
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-18-17-23-01-788924-andylong-desktop-40235
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [40254]
+[INFO] [c30d_node-2]: process started with pid [40255]
+[INFO] [bus_node-3]: process started with pid [40256]
+[INFO] [lidar_node-4]: process started with pid [40257]
+[INFO] [follow_node-5]: process started with pid [40258]
+[lidar_node-4] [INFO] [1794993782.387185262] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1794993782.387628818] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1794993783.076701007] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1794993783.133907980] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1794993783.176052394] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1794993783.177331968] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[follow_node-5] [INFO] [1794993783.407291673] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [INFO] [1794993783.474201907] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1794993783.486593816] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-18-20-28-30-861534-andylong-desktop-810125
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [810144]
+[INFO] [c30d_node-2]: process started with pid [810145]
+[INFO] [bus_node-3]: process started with pid [810146]
+[INFO] [lidar_node-4]: process started with pid [810147]
+[INFO] [follow_node-5]: process started with pid [810148]
+[lidar_node-4] [INFO] [1795004911.646559326] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795004911.647200783] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795004912.338743967] [lidar_node]: Skipping first partial scan...
+[c30d_node-2] [INFO] [1795004912.424653764] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795004912.438880817] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[bus_node-3] [INFO] [1795004912.645344830] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1795004912.700700780] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795004912.750813149] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795004912.751869288] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[safety_node-1] [WARN] [1795005168.926634835] [safety_manager]: obstacle stop front:0.395 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005169.576487527] [safety_manager]: obstacle stop front:0.396 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005170.576519285] [safety_manager]: obstacle stop front:0.395 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005171.576578600] [safety_manager]: obstacle stop front:0.398 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005172.076498000] [safety_manager]: obstacle stop front:0.396 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005172.626623325] [safety_manager]: obstacle stop front:0.397 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005173.576559832] [safety_manager]: obstacle stop front:0.396 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005173.826497903] [safety_manager]: obstacle stop front:0.396 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005175.126475076] [safety_manager]: obstacle stop front:0.398 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005175.376471870] [safety_manager]: obstacle stop front:0.398 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005187.926656270] [safety_manager]: obstacle stop left:0.450 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005188.226460296] [safety_manager]: obstacle stop left:0.447 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005188.726445195] [safety_manager]: obstacle stop left:0.442 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005189.576638489] [safety_manager]: obstacle stop left:0.447 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005191.726461099] [safety_manager]: obstacle stop left:0.443 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005192.226613648] [safety_manager]: obstacle stop left:0.446 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005192.726466237] [safety_manager]: obstacle stop left:0.447 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005193.726582748] [safety_manager]: obstacle stop left:0.441 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005240.726559343] [safety_manager]: obstacle stop front:0.447 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005274.076650820] [safety_manager]: obstacle stop right:0.448 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795005282.226725126] [safety_manager]: obstacle stop left:0.450 stop_m=0.45 hard_m=0.3
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-18-20-49-43-903403-andylong-desktop-821129
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [821151]
+[INFO] [c30d_node-2]: process started with pid [821152]
+[INFO] [bus_node-3]: process started with pid [821153]
+[INFO] [lidar_node-4]: process started with pid [821154]
+[INFO] [follow_node-5]: process started with pid [821155]
+[lidar_node-4] [ERROR] [1795006184.412665957] [lidar_node]: Open Error: No such file or directory
+[lidar_node-4] [FATAL] [1795006184.414313827] [lidar_node]: Failed to open serial port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[ERROR] [lidar_node-4]: process has died [pid 821154, exit code 1, cmd '/opt/personal_robot/ros2_ws/install/lidar_pkg/lib/lidar_pkg/lidar_node --ros-args -r __node:=lidar_node --params-file /opt/personal_robot/ros2_ws/install/lidar_pkg/share/lidar_pkg/config/lidar_params.yaml'].
+[safety_node-1] [WARN] [1795006185.245341775] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795006185.246469232] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[follow_node-5] [INFO] [1795006185.463039124] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[bus_node-3] [INFO] [1795006185.468103552] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[c30d_node-2] [INFO] [1795006190.831978265] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795006190.846445204] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[c30d_node-2] [ERROR] [1795006190.897813629] [c30d_driver]: serial write/open failed: [Errno 2] could not open port /dev/c30d: [Errno 2] No such file or directory: '/dev/c30d'
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-18-21-02-52-612511-andylong-desktop-891547
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [891571]
+[INFO] [c30d_node-2]: process started with pid [891572]
+[INFO] [bus_node-3]: process started with pid [891573]
+[INFO] [lidar_node-4]: process started with pid [891574]
+[INFO] [follow_node-5]: process started with pid [891575]
+[lidar_node-4] [ERROR] [1795006973.350578138] [lidar_node]: Open Error: No such file or directory
+[lidar_node-4] [FATAL] [1795006973.351994692] [lidar_node]: Failed to open serial port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[ERROR] [lidar_node-4]: process has died [pid 891574, exit code 1, cmd '/opt/personal_robot/ros2_ws/install/lidar_pkg/lib/lidar_pkg/lidar_node --ros-args -r __node:=lidar_node --params-file /opt/personal_robot/ros2_ws/install/lidar_pkg/share/lidar_pkg/config/lidar_params.yaml'].
+[follow_node-5] [INFO] [1795006974.216836743] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[bus_node-3] [INFO] [1795006974.331507942] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1795006974.391127725] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795006974.392164854] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [ERROR] [1795006974.539227092] [c30d_driver]: serial open failed: [Errno 2] could not open port /dev/c30d: [Errno 2] No such file or directory: '/dev/c30d'
+[c30d_node-2] [WARN] [1795006974.549090642] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[bus_node-3] [WARN] [1795006995.194730329] [command_bus]: skill rejected id=r15517208491906_1 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006995.749211448] [command_bus]: skill rejected id=r15517763258025_2 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006995.952443592] [command_bus]: skill rejected id=r15517966313558_3 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006996.307641062] [command_bus]: skill rejected id=r15518321581361_4 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006997.114801954] [command_bus]: skill rejected id=r15519129230809_5 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006997.418526363] [command_bus]: skill rejected id=r15519431529274_6 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006997.927129579] [command_bus]: skill rejected id=r15519940154713_7 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006998.480243838] [command_bus]: skill rejected id=r15520494526340_8 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006998.530886748] [command_bus]: skill rejected id=r15520545075769_9 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006999.084606820] [command_bus]: skill rejected id=r15521098896341_10 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006999.386800281] [command_bus]: skill rejected id=r15521401055655_11 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006999.689519724] [command_bus]: skill rejected id=r15521703684412_12 reason=no_motion_permit
+[bus_node-3] [WARN] [1795006999.893438808] [command_bus]: skill rejected id=r15521907683866_13 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007000.649004273] [command_bus]: skill rejected id=r15522663080054_14 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007006.949397190] [command_bus]: skill rejected id=r15528963629082_15 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007007.000407264] [command_bus]: skill rejected id=r15529014144638_16 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007007.856423532] [command_bus]: skill rejected id=r15529870558442_17 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007008.208966238] [command_bus]: skill rejected id=r15530223082204_18 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007008.259504960] [command_bus]: skill rejected id=r15530273603167_19 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007008.714902905] [command_bus]: skill rejected id=r15530727605112_20 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007009.115986499] [command_bus]: skill rejected id=r15531130368502_21 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007009.368314498] [command_bus]: skill rejected id=r15531382249927_22 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007010.173464774] [command_bus]: skill rejected id=r15532187817629_23 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007010.526165734] [command_bus]: skill rejected id=r15532540385755_24 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007010.727497491] [command_bus]: skill rejected id=r15532741893772_25 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007011.130914765] [command_bus]: skill rejected id=r15533145121175_26 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007011.433119464] [command_bus]: skill rejected id=r15533447244041_27 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007011.936574513] [command_bus]: skill rejected id=r15533950764312_28 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007011.986926420] [command_bus]: skill rejected id=r15534001260626_29 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007012.542691667] [command_bus]: skill rejected id=r15534556276911_30 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007012.844548142] [command_bus]: skill rejected id=r15534858460183_31 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007013.347566001] [command_bus]: skill rejected id=r15535361843615_32 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007013.802983377] [command_bus]: skill rejected id=r15535817181009_33 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007013.853230950] [command_bus]: skill rejected id=r15535867662230_34 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007014.557787040] [command_bus]: skill rejected id=r15536572176191_35 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007014.659079110] [command_bus]: skill rejected id=r15536673028502_36 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007015.011487081] [command_bus]: skill rejected id=r15537025525010_37 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007015.565183282] [command_bus]: skill rejected id=r15537579537174_38 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007016.119162298] [command_bus]: skill rejected id=r15538133177987_39 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007016.170800221] [command_bus]: skill rejected id=r15538183688984_40 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007016.471481061] [command_bus]: skill rejected id=r15538485726675_41 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007016.826058859] [command_bus]: skill rejected id=r15538840230269_42 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007017.681668393] [command_bus]: skill rejected id=r15539695880340_43 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007027.094940227] [command_bus]: skill rejected id=r15549109173175_44 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007027.147737220] [command_bus]: skill rejected id=r15549159771669_45 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007028.510759551] [command_bus]: skill rejected id=r15550522749501_46 reason=no_motion_permit
+[bus_node-3] [WARN] [1795007029.724958907] [command_bus]: skill rejected id=r15551738517874_47 reason=estop_latched
+[bus_node-3] [WARN] [1795007032.092356555] [command_bus]: skill rejected id=52badd98 reason=estop_latched
+[bus_node-3] [WARN] [1795007032.489141840] [command_bus]: skill rejected id=r15554499810568_48 reason=estop_latched
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-07-52-13-036577-andylong-desktop-2750
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [2793]
+[INFO] [c30d_node-2]: process started with pid [2794]
+[INFO] [bus_node-3]: process started with pid [2795]
+[INFO] [lidar_node-4]: process started with pid [2796]
+[INFO] [follow_node-5]: process started with pid [2797]
+[bus_node-3] [INFO] [1795045935.042508015] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1795045935.101731727] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795045935.238620322] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795045935.240707827] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [ERROR] [1795045935.416107096] [c30d_driver]: serial open failed: [Errno 2] could not open port /dev/c30d: [Errno 2] No such file or directory: '/dev/c30d'
+[c30d_node-2] [WARN] [1795045935.459217951] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[lidar_node-4] [INFO] [1795045935.474921989] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795045935.475271490] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795045936.164537734] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [WARN] [1795045972.052838094] [command_bus]: skill rejected id=r445255354823_1 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045972.402816754] [command_bus]: skill rejected id=r445603792749_2 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045972.852507089] [command_bus]: skill rejected id=r446053781860_3 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045973.252596081] [command_bus]: skill rejected id=r446455056548_4 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045973.652070614] [command_bus]: skill rejected id=r446854579490_5 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045974.052806142] [command_bus]: skill rejected id=r447255389949_6 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045974.452508002] [command_bus]: skill rejected id=r447654481089_7 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045974.802145216] [command_bus]: skill rejected id=r448003882105_8 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045975.252352264] [command_bus]: skill rejected id=r448454661426_9 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045975.956946079] [command_bus]: skill rejected id=r449154352303_10 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045976.352808799] [command_bus]: skill rejected id=r449554588247_11 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045976.802705996] [command_bus]: skill rejected id=r450003880188_12 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045977.153646764] [command_bus]: skill rejected id=r450354944796_13 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045977.554970064] [command_bus]: skill rejected id=r450756838980_14 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045978.003021659] [command_bus]: skill rejected id=r451204948300_15 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045978.403015737] [command_bus]: skill rejected id=r451605250302_16 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045978.752507257] [command_bus]: skill rejected id=r451953771287_17 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045978.802991630] [command_bus]: skill rejected id=r452004740501_18 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045980.706245623] [command_bus]: skill rejected id=r453907485855_19 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045981.002626939] [command_bus]: skill rejected id=r454204888543_20 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045981.404177974] [command_bus]: skill rejected id=r454605229696_21 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045981.652704952] [command_bus]: skill rejected id=r454853771583_22 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045982.202999935] [command_bus]: skill rejected id=r455403751437_23 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045982.602230785] [command_bus]: skill rejected id=r455804611007_24 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045983.002564252] [command_bus]: skill rejected id=r456203783020_25 reason=no_motion_permit
+[bus_node-3] [WARN] [1795045983.256378227] [command_bus]: skill rejected id=r456455198010_26 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046038.752629013] [command_bus]: skill rejected id=r511954552857_27 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046039.151271695] [command_bus]: skill rejected id=r512353704197_28 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046039.603680931] [command_bus]: skill rejected id=r512804239514_29 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046040.005366541] [command_bus]: skill rejected id=r513205858139_30 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046040.652197975] [command_bus]: skill rejected id=r513853708297_31 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046041.151020634] [command_bus]: skill rejected id=r514353572847_32 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046041.502315563] [command_bus]: skill rejected id=r514704678043_33 reason=no_motion_permit
+[bus_node-3] [WARN] [1795046041.656754973] [command_bus]: skill rejected id=r514854995650_34 reason=no_motion_permit
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-08-21-36-233420-andylong-desktop-14957
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [14976]
+[INFO] [c30d_node-2]: process started with pid [14977]
+[INFO] [bus_node-3]: process started with pid [14978]
+[INFO] [lidar_node-4]: process started with pid [14979]
+[INFO] [follow_node-5]: process started with pid [14980]
+[lidar_node-4] [INFO] [1795047696.837921628] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795047696.838408603] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795047696.843231389] [lidar_node]: Skipping first partial scan...
+[follow_node-5] [INFO] [1795047697.937011947] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[bus_node-3] [INFO] [1795047698.011682253] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1795047698.305514005] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795047698.308708387] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [ERROR] [1795047698.310560232] [c30d_driver]: serial open failed: [Errno 2] could not open port /dev/c30d: [Errno 2] No such file or directory: '/dev/c30d'
+[c30d_node-2] [WARN] [1795047698.323968325] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[safety_node-1] [WARN] [1795047728.878062042] [safety_manager]: obstacle stop rear:0.312 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795047729.477968703] [safety_manager]: obstacle stop hard:rear:0.298 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795047774.178294143] [safety_manager]: obstacle stop front:0.314 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795047774.779177401] [safety_manager]: obstacle stop front:0.314 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795047776.828008653] [safety_manager]: obstacle stop front:0.313 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795047782.128029044] [safety_manager]: obstacle stop hard:left:0.283 stop_m=0.45 hard_m=0.3
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-08-26-53-704365-andylong-desktop-2068
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [2145]
+[INFO] [c30d_node-2]: process started with pid [2146]
+[INFO] [bus_node-3]: process started with pid [2147]
+[INFO] [lidar_node-4]: process started with pid [2148]
+[INFO] [follow_node-5]: process started with pid [2149]
+[safety_node-1] [WARN] [1795048016.318214800] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795048016.319948278] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[follow_node-5] [INFO] [1795048016.324092551] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[bus_node-3] [INFO] [1795048016.333047341] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[lidar_node-4] [INFO] [1795048016.412495512] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795048016.412826449] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[c30d_node-2] [INFO] [1795048016.467057860] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795048016.493085008] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[lidar_node-4] [INFO] [1795048017.099570577] [lidar_node]: Skipping first partial scan...
+[safety_node-1] [WARN] [1795048034.366252767] [safety_manager]: obstacle stop front:0.416 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795048034.866224280] [safety_manager]: obstacle stop front:0.391 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795048037.366409096] [safety_manager]: obstacle stop rear:0.449 stop_m=0.45 hard_m=0.3
+[bus_node-3] [WARN] [1795048125.220207336] [command_bus]: skill rejected id=r236410541348_30 reason=estop_latched
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-08-32-07-377736-andylong-desktop-15577
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [15596]
+[INFO] [c30d_node-2]: process started with pid [15597]
+[INFO] [bus_node-3]: process started with pid [15598]
+[INFO] [lidar_node-4]: process started with pid [15599]
+[INFO] [follow_node-5]: process started with pid [15600]
+[lidar_node-4] [INFO] [1795048327.949985003] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795048327.950601730] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795048328.641002187] [lidar_node]: Skipping first partial scan...
+[follow_node-5] [INFO] [1795048329.553416160] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[bus_node-3] [INFO] [1795048329.563338383] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1795048329.585464136] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795048329.587303001] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [INFO] [1795048329.675996356] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795048329.685304871] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[safety_node-1] [WARN] [1795048391.552526954] [safety_manager]: obstacle stop front:0.427 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795048395.052586773] [safety_manager]: obstacle stop rear:0.450 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795048456.352617494] [safety_manager]: obstacle stop rear:0.440 stop_m=0.45 hard_m=0.3
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-12-27-775483-andylong-desktop-30151
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [30171]
+[INFO] [c30d_node-2]: process started with pid [30172]
+[INFO] [bus_node-3]: process started with pid [30173]
+[INFO] [lidar_node-4]: process started with pid [30174]
+[INFO] [follow_node-5]: process started with pid [30175]
+[lidar_node-4] [INFO] [1795050748.452336230] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795050748.452706377] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795050749.130934246] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1795050749.347594374] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[c30d_node-2] [INFO] [1795050749.435751476] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795050749.452194775] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[follow_node-5] [INFO] [1795050749.575881899] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795050749.690056624] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795050749.691005697] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-17-04-565718-andylong-desktop-31930
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [31952]
+[INFO] [c30d_node-2]: process started with pid [31953]
+[INFO] [bus_node-3]: process started with pid [31954]
+[INFO] [lidar_node-4]: process started with pid [31955]
+[INFO] [follow_node-5]: process started with pid [31956]
+[lidar_node-4] [INFO] [1795051025.176898319] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795051025.177343987] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795051025.863562039] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1795051026.064288239] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1795051026.115810070] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795051026.238715792] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795051026.239696128] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [INFO] [1795051026.402243119] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795051026.412371140] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-21-16-983208-andylong-desktop-41325
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [41347]
+[INFO] [c30d_node-2]: process started with pid [41348]
+[INFO] [bus_node-3]: process started with pid [41349]
+[INFO] [lidar_node-4]: process started with pid [41350]
+[INFO] [follow_node-5]: process started with pid [41351]
+[lidar_node-4] [INFO] [1795051277.698147615] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795051277.698498987] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[bus_node-3] [INFO] [1795051278.344562231] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[lidar_node-4] [INFO] [1795051278.377248669] [lidar_node]: Skipping first partial scan...
+[follow_node-5] [INFO] [1795051278.503824182] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795051278.996529610] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795051278.997819356] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [INFO] [1795051279.408683256] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795051279.418171902] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[c30d_node-2] [ERROR] [1795051513.037137851] [c30d_driver]: serial write/open failed: [Errno 2] could not open port /dev/c30d: [Errno 2] No such file or directory: '/dev/c30d'
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-26-41-663314-andylong-desktop-44156
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [44176]
+[INFO] [c30d_node-2]: process started with pid [44177]
+[INFO] [bus_node-3]: process started with pid [44178]
+[INFO] [lidar_node-4]: process started with pid [44179]
+[INFO] [follow_node-5]: process started with pid [44180]
+[lidar_node-4] [INFO] [1795051602.198410650] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795051602.198752911] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795051602.885354295] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1795051603.541933993] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[c30d_node-2] [INFO] [1795051603.680403702] [c30d_driver]: opened /dev/c30d @ 115200
+[safety_node-1] [WARN] [1795051603.683828756] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795051603.684954002] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[follow_node-5] [INFO] [1795051603.693015042] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [WARN] [1795051603.694892033] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[c30d_node-2] [ERROR] [1795051610.094438897] [c30d_driver]: serial write/open failed: [Errno 2] could not open port /dev/c30d: [Errno 2] No such file or directory: '/dev/c30d'
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-30-40-777812-andylong-desktop-2366
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [2405]
+[INFO] [c30d_node-2]: process started with pid [2406]
+[INFO] [bus_node-3]: process started with pid [2407]
+[INFO] [lidar_node-4]: process started with pid [2408]
+[INFO] [follow_node-5]: process started with pid [2409]
+[bus_node-3] [INFO] [1795051843.043778684] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1795051843.118719135] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795051843.120075338] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[follow_node-5] [INFO] [1795051843.150186539] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[lidar_node-4] [INFO] [1795051843.292181378] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795051843.292458835] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[c30d_node-2] [INFO] [1795051843.326252317] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795051843.354141087] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[lidar_node-4] [INFO] [1795051843.976604757] [lidar_node]: Skipping first partial scan...
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-31-53-770408-andylong-desktop-2966
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [2989]
+[INFO] [c30d_node-2]: process started with pid [2990]
+[INFO] [bus_node-3]: process started with pid [2991]
+[INFO] [lidar_node-4]: process started with pid [2992]
+[INFO] [follow_node-5]: process started with pid [2993]
+[lidar_node-4] [INFO] [1795051914.359195341] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795051914.359779123] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795051915.027379475] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1795051915.525074352] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[safety_node-1] [WARN] [1795051915.692526025] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795051915.693675605] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[follow_node-5] [INFO] [1795051915.900359084] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [INFO] [1795051916.055119389] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795051916.064225354] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-32-54-535116-andylong-desktop-4234
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [4253]
+[INFO] [c30d_node-2]: process started with pid [4254]
+[INFO] [bus_node-3]: process started with pid [4255]
+[INFO] [lidar_node-4]: process started with pid [4256]
+[INFO] [follow_node-5]: process started with pid [4257]
+[lidar_node-4] [INFO] [1795051975.301048162] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795051975.301593619] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795051975.988550472] [lidar_node]: Skipping first partial scan...
+[follow_node-5] [INFO] [1795051976.235283696] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[bus_node-3] [INFO] [1795051976.762676437] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[c30d_node-2] [INFO] [1795051976.829932178] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795051976.848274893] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[safety_node-1] [WARN] [1795051976.864899963] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795051976.865919622] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-33-49-630918-andylong-desktop-5809
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [5828]
+[INFO] [c30d_node-2]: process started with pid [5829]
+[INFO] [bus_node-3]: process started with pid [5830]
+[INFO] [lidar_node-4]: process started with pid [5831]
+[INFO] [follow_node-5]: process started with pid [5832]
+[lidar_node-4] [INFO] [1795052030.348879009] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795052030.349470386] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795052031.035304163] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1795052031.464556768] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1795052031.618386690] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [INFO] [1795052031.682489372] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795052031.715735108] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[safety_node-1] [WARN] [1795052031.867143296] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795052031.868086538] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-35-16-020757-andylong-desktop-7227
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [7246]
+[INFO] [c30d_node-2]: process started with pid [7247]
+[INFO] [bus_node-3]: process started with pid [7248]
+[INFO] [lidar_node-4]: process started with pid [7249]
+[INFO] [follow_node-5]: process started with pid [7250]
+[lidar_node-4] [INFO] [1795052116.670097330] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795052116.670575436] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795052116.864363486] [lidar_node]: Skipping first partial scan...
+[safety_node-1] [WARN] [1795052117.908272188] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795052117.909705857] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[bus_node-3] [INFO] [1795052118.042576592] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1795052118.119509788] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [INFO] [1795052118.254969340] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795052118.266653135] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-09-36-35-114792-andylong-desktop-7870
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [7891]
+[INFO] [c30d_node-2]: process started with pid [7892]
+[INFO] [bus_node-3]: process started with pid [7893]
+[INFO] [lidar_node-4]: process started with pid [7894]
+[INFO] [follow_node-5]: process started with pid [7895]
+[lidar_node-4] [INFO] [1795052196.034697247] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795052196.035337278] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[bus_node-3] [INFO] [1795052196.607746716] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[lidar_node-4] [INFO] [1795052196.717604279] [lidar_node]: Skipping first partial scan...
+[c30d_node-2] [INFO] [1795052197.220346048] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795052197.250014401] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[follow_node-5] [INFO] [1795052197.325054505] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795052197.357526017] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795052197.358925356] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-10-05-59-875837-andylong-desktop-12407
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [12429]
+[INFO] [c30d_node-2]: process started with pid [12430]
+[INFO] [bus_node-3]: process started with pid [12431]
+[INFO] [lidar_node-4]: process started with pid [12432]
+[INFO] [follow_node-5]: process started with pid [12433]
+[lidar_node-4] [INFO] [1795053960.472100460] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795053960.472900385] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795053960.665265232] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1795053961.643465844] [command_bus]: command_bus up motion_enabled=True drive via /cmd_vel_remote (no serial)
+[follow_node-5] [INFO] [1795053961.683903378] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[c30d_node-2] [INFO] [1795053961.962367539] [c30d_driver]: opened /dev/c30d @ 115200
+[safety_node-1] [WARN] [1795053961.969127002] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795053961.970443568] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [WARN] [1795053961.989692120] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[bus_node-3] [WARN] [1795054049.187264368] [command_bus]: skill rejected id=ah2363369317867 reason=no_motion_permit
+[bus_node-3] [WARN] [1795054052.328542921] [command_bus]: skill rejected id=ah2367901418340 reason=no_motion_permit
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-10-11-55-572188-andylong-desktop-14222
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [14242]
+[INFO] [c30d_node-2]: process started with pid [14243]
+[INFO] [bus_node-3]: process started with pid [14244]
+[INFO] [lidar_node-4]: process started with pid [14245]
+[INFO] [follow_node-5]: process started with pid [14246]
+[lidar_node-4] [INFO] [1795054316.354006122] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795054316.354536886] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[bus_node-3] [INFO] [1795054316.957914102] [command_bus]: command_bus up motion_enabled=True drive REMOTE→/cmd_vel_remote AWAKE→/cmd_vel_awake (no serial)
+[lidar_node-4] [INFO] [1795054317.023551746] [lidar_node]: Skipping first partial scan...
+[follow_node-5] [INFO] [1795054317.196988607] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795054317.523501814] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795054317.524583934] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [INFO] [1795054317.843651480] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795054317.851419244] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-10-17-34-283569-andylong-desktop-17682
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [17705]
+[INFO] [c30d_node-2]: process started with pid [17707]
+[INFO] [bus_node-3]: process started with pid [17708]
+[INFO] [lidar_node-4]: process started with pid [17709]
+[INFO] [follow_node-5]: process started with pid [17712]
+[lidar_node-4] [INFO] [1795054654.957668804] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795054654.958095228] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795054655.640975158] [lidar_node]: Skipping first partial scan...
+[follow_node-5] [INFO] [1795054655.978453020] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[bus_node-3] [INFO] [1795054656.036406771] [command_bus]: command_bus up motion_enabled=True drive REMOTE→/cmd_vel_remote AWAKE→/cmd_vel_awake (no serial)
+[safety_node-1] [WARN] [1795054656.037459616] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795054656.038458628] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [INFO] [1795054656.046949443] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795054656.059004624] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[INFO] [launch]: All log files can be found below /home/andylong/.ros/log/2026-11-19-10-21-37-362132-andylong-desktop-20720
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [safety_node-1]: process started with pid [20739]
+[INFO] [c30d_node-2]: process started with pid [20740]
+[INFO] [bus_node-3]: process started with pid [20741]
+[INFO] [lidar_node-4]: process started with pid [20742]
+[INFO] [follow_node-5]: process started with pid [20743]
+[lidar_node-4] [INFO] [1795054897.936505345] [lidar_node]: Lidar started. Port: /dev/serial/by-id/usb-STC_STC_USB_Serial-if00
+[lidar_node-4] [INFO] [1795054897.936892641] [lidar_node]: Filter Config -> Enabled: true, Rad: 0.10m, Neighbors: 2
+[lidar_node-4] [INFO] [1795054897.937061105] [lidar_node]: Skipping first partial scan...
+[bus_node-3] [INFO] [1795054898.455220969] [command_bus]: command_bus up motion_enabled=True drive REMOTE→/cmd_vel_remote AWAKE→/cmd_vel_awake (no serial)
+[follow_node-5] [INFO] [1795054898.843784535] [lidar_follow]: follow node up enabled=False target_m=0.8 -> /cmd_vel_awake
+[safety_node-1] [WARN] [1795054898.972873112] [safety_manager]: Safety: no hardware e-stop. Software latch is not industrial. Does not open C30D serial.
+[safety_node-1] [INFO] [1795054898.973872891] [safety_manager]: obstacle stop 4-way on /scan stop_m=0.45 hard_m=0.3 sector_deg=±50.0 ignore_below_m=0.28 offset_deg=0.0
+[c30d_node-2] [INFO] [1795054899.292683013] [c30d_driver]: opened /dev/c30d @ 115200
+[c30d_node-2] [WARN] [1795054899.301158356] [c30d_driver]: C30D: no hardware e-stop. Mec-S coast-stop is not industrial. If wheels keep moving, cut motor drive power.
+[safety_node-1] [WARN] [1795054948.300315749] [safety_manager]: obstacle stop rear:0.331 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795054948.950458149] [safety_manager]: obstacle stop hard:rear:0.283 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795054969.100757342] [safety_manager]: obstacle stop hard:rear:0.287 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795054969.450332252] [safety_manager]: obstacle stop hard:rear:0.281 stop_m=0.45 hard_m=0.3
+[safety_node-1] [WARN] [1795054970.600543374] [safety_manager]: obstacle stop hard:rear:0.282 stop_m=0.45 hard_m=0.3

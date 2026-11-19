@@ -8,8 +8,12 @@
   <license>Apache-2.0</license>
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <exec_depend>c30d_driver</exec_depend>
+  <exec_depend>command_bus</exec_depend>
+  <exec_depend>lidar_pkg</exec_depend>
+  <exec_depend>lidar_assist</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <test_depend>python3-pytest</test_depend>
   <export>

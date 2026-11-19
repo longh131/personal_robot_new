@@ -33,6 +33,8 @@ media:
   videos: /opt/personal_robot/data/media/remote/videos
   recordings: /opt/personal_robot/data/media/remote/recordings
   sentry: /opt/personal_robot/data/media/remote/sentry
+  awake_photos: /opt/personal_robot/data/media/awake/photos
+  awake_music: /opt/personal_robot/data/media/awake/music
   video_max_s: 60
   audio_max_s: 60
 
@@ -42,8 +44,19 @@ camera:
   fps: 10
 
 gimbal:
-  enabled: false
+  enabled: true
   model: MG90S
+  # gpiozero+lgpio。水平 BCM24（已用 sweep 验证），俯仰 BCM19。
+  pan_bcm: 24
+  tilt_bcm: 19
+  period_s: 0.020
+  pulse_mid_s: 0.0015
+  pan_min_s: 0.0010
+  pan_max_s: 0.0020
+  tilt_min_s: 0.0010
+  tilt_max_s: 0.0020
+  step_s: 0.000050
+  cmd_timeout_s: 8.0
 
 remote:
   vx_max: 0.15
@@ -51,8 +64,15 @@ remote:
   wz_max: 0.40
   heartbeat_timeout_s: 30
 
+awake:
+  vx_max: 0.12
+  vy_max: 0.12
+  wz_max: 0.35
+  # refresh skill_cmd while holding; Bus drive_timeout is 1.0s
+  drive_refresh_s: 0.4
+
 sentry:
-  enabled: true
+  enabled: false
   threshold: 10
   cooldown_s: 8
   max_events_per_hour: 12

@@ -52,14 +52,16 @@ python3 /opt/personal_robot/scripts/set_remote_password.py --user andylong
 - AWAKE 无有效对话超时：`robot.yaml` 的 `idle_timeout_s`（秒，默认 30，范围 5–86400）。改完重启 `start.sh`。
 - 密钥只在 `cloud.env`，不要写进 Python。
 
+- AWAKE 拍照：`data/media/awake/photos`（`media.awake_photos`）。音乐 mp3：`data/media/awake/music`（`media.awake_music`）。默认顺序播放，可语音随机或点名。
+
 ## REMOTE 媒体
 
 - 拍照/录像/录音文件：`data/media/remote/`（路径在 `robot.yaml` 的 `media.photos` / `videos` / `recordings`）。
 - 录像、录音可按键开始/结束；不能超过 `video_max_s` / `audio_max_s`（秒）。
 - 预览：WebRTC。局域网可用；经 FRP 仅 TCP 时 ICE 可能失败，页面会回退 JPEG。
 - 通话：浏览器麦 ↔ 机器人喇叭/麦，**不含 ASR/TTS/LLM**。登录 REMOTE 会先停唤醒麦，对讲采集 `audio.capture`。
-- 云台 MG90S：页面按键已留，`gimbal.enabled` 现为 false，不转舵机。
-- 网页底盘：按住才走，松开停发。网页只发 `drive` 技能，经 Command Bus → Safety，不直连串口。`start.sh` 不启电机。
+- 云台：水平 **BCM24**、俯仰 **BCM19**（gpiozero+lgpio）。`step_s` `0.000050`。按住运动，松手 detach。供电端可并 220–470µF。
+- 网页底盘：按住才走。`scripts/start.sh` 会启动 Safety+Bus+C30D；未登录、未按键时不应走动。网页不直连串口。
 
 ### 网页底盘限速（`robot.yaml` 的 `remote`）
 
@@ -90,7 +92,7 @@ python3 /opt/personal_robot/scripts/set_remote_password.py --user andylong
 
 | 字段 | 含义 | 默认 |
 |---|---|---|
-| `sentry.enabled` | 是否开看守 | true |
+| `sentry.enabled` | 是否开看守 | false（相机未恢复前临时关闭） |
 | `sentry.threshold` | 灰度帧差阈值，越大越钝 | 10 |
 | `sentry.clip_s` | 每次触发录制秒数（2–60） | 10 |
 | `sentry.cooldown_s` | 两次事件最短间隔（秒） | 8 |
