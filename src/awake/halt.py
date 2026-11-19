@@ -23,8 +23,14 @@ _SKILL = Path(__file__).resolve().parent / "skill_pub.py"
 
 _lock = threading.Lock()
 _proc: subprocess.Popen | None = None
-_hold: tuple[float, float, float] | None = None
+_hold: tuple[float, float, float] | None = None  # base at scale=1 limits
+_dir: tuple[float, float, float] | None = None  # unit direction before scale
+_scale = 1.0
 _refresh: threading.Thread | None = None
+_mode_epoch = 0
+_SCALE_MIN = 0.4
+_SCALE_MAX = 1.0
+_SCALE_STEP = 0.2
 
 
 def _limits() -> tuple[float, float, float, float]:
@@ -70,23 +76,67 @@ def _write_line(line: str) -> None:
     proc.stdin.flush()
 
 
-def mode_cmd(mode: str) -> None:
+def bump_mode_epoch() -> int:
+    """Invalidate in-flight MODE AWAKE (e.g. leave before wake pub finishes)."""
+    global _mode_epoch
+    with _lock:
+        _mode_epoch += 1
+        return _mode_epoch
+
+
+def mode_epoch() -> int:
+    with _lock:
+        return _mode_epoch
+
+
+def _ros2_mode_once(target: str) -> None:
+    """Reliable path — same idea as remote.ros_bridge.mode_cmd."""
+    body = "{data: '%s'}" % target
+    cmd = (
+        f"{_SETUP} && "
+        f"ros2 topic pub --once /robot/mode_cmd std_msgs/msg/String {shlex.quote(body)}"
+    )
+    try:
+        subprocess.run(
+            ["bash", "-lc", cmd],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=4,
+            env=os.environ.copy(),
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        log.warning("awake mode_cmd ros2 once %s: %s", target, exc)
+
+
+def mode_cmd(mode: str, *, expect_epoch: int | None = None) -> None:
     """Sync Safety/Bus mode. Required before awake drive or follow."""
     target = (mode or "IDLE").strip().upper()
     with _lock:
+        if expect_epoch is not None and expect_epoch != _mode_epoch:
+            log.info("awake mode_cmd skip stale %s epoch=%s now=%s", target, expect_epoch, _mode_epoch)
+            return
         try:
             _write_line(f"MODE {target}")
-            log.info("awake mode_cmd %s", target)
         except Exception as exc:
-            log.warning("awake mode_cmd %s failed: %s", target, exc)
+            log.warning("awake mode_cmd skill_pub %s: %s", target, exc)
+    # Always pub --once so leave→IDLE is not lost if skill_pub is wedged
+    _ros2_mode_once(target)
+    log.info("awake mode_cmd %s", target)
 
 
 def _pub_drive(vx: float, vy: float, wz: float) -> None:
     _write_line(f"{vx:.4f} {vy:.4f} {wz:.4f}")
 
 
+def _scaled_hold() -> tuple[float, float, float] | None:
+    if _dir is None:
+        return None
+    dx, dy, dz = _dir
+    return (dx * _scale, dy * _scale, dz * _scale)
+
+
 def _refresh_loop(period: float) -> None:
-    """While _hold is set, refresh skill_cmd so Bus timeout does not clear motion."""
     global _hold
     while True:
         time.sleep(period)
@@ -114,11 +164,17 @@ def _ensure_refresh(period: float) -> None:
     _refresh.start()
 
 
+def is_holding() -> bool:
+    with _lock:
+        return _hold is not None
+
+
 def drive_stop() -> None:
     """Zero and clear continuous hold."""
-    global _hold
+    global _hold, _dir
     with _lock:
         _hold = None
+        _dir = None
         try:
             _pub_drive(0.0, 0.0, 0.0)
         except Exception as exc:
@@ -128,7 +184,7 @@ def drive_stop() -> None:
 
 def drive_hold(vx: float, vy: float, wz: float) -> str:
     """Keep moving until drive_stop / leave AWAKE. Obstacle still via Safety."""
-    global _hold
+    global _hold, _dir, _scale
     mx, my, mz, period = _limits()
     vx = max(-mx, min(mx, float(vx)))
     vy = max(-my, min(my, float(vy)))
@@ -136,14 +192,17 @@ def drive_hold(vx: float, vy: float, wz: float) -> str:
     if abs(vx) < 1e-6 and abs(vy) < 1e-6 and abs(wz) < 1e-6:
         drive_stop()
         return "好，停下。"
+    _scale = 1.0
     with _lock:
+        _dir = (vx, vy, wz)
         _hold = (vx, vy, wz)
         try:
             _pub_drive(vx, vy, wz)
         except Exception as exc:
             _hold = None
+            _dir = None
             log.warning("awake drive_hold: %s", exc)
-            return "这步没走成。"
+            return "运动链路没通，这步没走成。"
     _ensure_refresh(period)
     if abs(vx) >= abs(vy) and abs(vx) >= abs(wz):
         label = "前进" if vx > 0 else "后退"
@@ -151,15 +210,46 @@ def drive_hold(vx: float, vy: float, wz: float) -> str:
         label = "左移" if vy > 0 else "右移"
     else:
         label = "左转" if wz > 0 else "右转"
-    log.info(
-        "awake drive_hold %s vx=%.3f vy=%.3f wz=%.3f refresh=%.2f",
-        label,
-        vx,
-        vy,
-        wz,
-        period,
-    )
+    log.info("awake drive_hold %s vx=%.3f vy=%.3f wz=%.3f", label, vx, vy, wz)
     return f"好，持续{label}，说停下就停。"
+
+
+def drive_faster() -> str:
+    global _scale, _hold
+    if not is_holding():
+        return "现在没有在走，先说前进或后退。"
+    with _lock:
+        _scale = min(_SCALE_MAX, _scale + _SCALE_STEP)
+        hold = _scaled_hold()
+        _hold = hold
+        if hold is None:
+            return "现在没有在走。"
+        try:
+            _pub_drive(*hold)
+        except Exception as exc:
+            log.warning("drive_faster: %s", exc)
+            return "调速没发出去。"
+    pct = int(round(_scale * 100))
+    return f"好，加速到大约{pct}%。"
+
+
+def drive_slower() -> str:
+    global _scale, _hold
+    if not is_holding():
+        return "现在没有在走，先说前进或后退。"
+    with _lock:
+        _scale = max(_SCALE_MIN, _scale - _SCALE_STEP)
+        hold = _scaled_hold()
+        _hold = hold
+        if hold is None:
+            return "现在没有在走。"
+        try:
+            _pub_drive(*hold)
+        except Exception as exc:
+            log.warning("drive_slower: %s", exc)
+            return "调速没发出去。"
+    pct = int(round(_scale * 100))
+    return f"好，减速到大约{pct}%。"
 
 
 def drive_pulse(vx: float, vy: float, wz: float) -> str:

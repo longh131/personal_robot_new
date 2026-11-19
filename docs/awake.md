@@ -22,6 +22,16 @@
 ## 对话指令（本刀）
 
 - 不引用 `remote/`。听清 → 关键词指令（最长词优先，再比权重）→ 否则闲聊 → TTS。REMOTE 抢权停听停播、不告别抢声卡。
-- 系统：停发、退出、音量（含调大/调高等口语）。查询：时间/日期/电量/天气新闻。娱乐：拍照到 `data/media/awake/photos`；音乐点名/随机；听指令时暂停播放以免抢麦。助手：记忆须确认才写入主人档案。
-- 电机语音：进 AWAKE 时 `mode_cmd(AWAKE)`；说「前进」等为**持续行驶**（`awake/skill_pub` 每 `drive_refresh_s` 刷新 → Bus → `/cmd_vel_awake`），说「停下/别动」或退出 AWAKE 才停；近障由 Safety 刹该向。速度见 `awake.vx_max` 等。跟随同依赖 AWAKE 许可。
-- 闹钟/倒计时/提醒只占词表，履约后做。
+- 系统：停发、退出、音量。查询：时间/日期/电量/天气新闻；**相机怎样**、**急停了吗**。
+- 娱乐：拍照到 `data/media/awake/photos`；音乐点名/随机；听指令时暂停播放。
+- 助手：记忆确认写入；**我喜欢什么/记得什么**查询；**忘掉…**确认后失效。
+- **倒计时 / 提醒 / 闹钟**：进程内定时，到点蜂鸣+TTS；**取消倒计时/取消提醒**。回 IDLE 未到点的任务仍保留至进程退出。
+- 电机：持续行驶 + **快点/慢点**调档；近障主动停并语音提示。`awake.vx_max`、`drive_refresh_s`、`empty_asr_prompt_n`、`timeout_warn_s` 见 `robot.yaml`。
+- 质量：连续空 ASR 提示「没听清」；超时前「还在吗」；失败分因（相机/云/运动链路）。
+- 听音：`min_voiced_s` 丢掉过短毛刺；`post_tts_gap_s` 减轻播后回声进 ASR；相机口令支持「怎么样/检查一下相机」等软匹配；TTS 超时会重试一次。
+
+- 退出 AWAKE：停速 + `mode_cmd(IDLE)`（skill_pub 与 `ros2 pub --once`）；epoch 作废迟到的 `MODE AWAKE`，避免堵死后续 REMOTE。
+
+## 跟随（备案，未做）
+
+采购 Camera Module 3 Wide 后再开发：脸/登记开锁 + 背后人体跟踪 + 雷达刹停；仅 AWAKE → `/cmd_vel_awake`。

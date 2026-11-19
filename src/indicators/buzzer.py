@@ -48,6 +48,16 @@ class Buzzer:
             self._busy = True
         threading.Thread(target=self._denied_run, name="buzz-denied", daemon=True).start()
 
+    def beep_chime(self) -> None:
+        """Two short beeps for timer due. Non-blocking."""
+        if self._line is None:
+            return
+        with self._lock:
+            if self._busy:
+                return
+            self._busy = True
+        threading.Thread(target=self._chime_run, name="buzz-chime", daemon=True).start()
+
     def _tone(self, seconds: float) -> None:
         line = self._line
         if line is None:
@@ -80,6 +90,21 @@ class Buzzer:
                 self._tone(0.08)
                 if i < 2:
                     time.sleep(0.08)
+        finally:
+            if self._line is not None:
+                try:
+                    self._line.set(False)
+                except OSError:
+                    pass
+            with self._lock:
+                self._busy = False
+
+    def _chime_run(self) -> None:
+        try:
+            for i in range(2):
+                self._tone(0.10)
+                if i < 1:
+                    time.sleep(0.10)
         finally:
             if self._line is not None:
                 try:

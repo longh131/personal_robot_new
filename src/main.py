@@ -107,13 +107,14 @@ def main() -> int:
 
     def on_mode(prev: str, now: str) -> None:
         if now == "AWAKE" and prev == "IDLE":
-            from awake.halt import mode_cmd
+            from awake.halt import bump_mode_epoch, mode_cmd
             from awake.talk import run_awake
 
-            # Sync Safety/Bus before any drive/follow; do not block greeting on ros2 CLI
+            # Epoch so a late MODE AWAKE cannot overwrite leave→IDLE
+            ep = bump_mode_epoch()
             threading.Thread(
                 target=mode_cmd,
-                args=("AWAKE",),
+                kwargs={"mode": "AWAKE", "expect_epoch": ep},
                 name="awake-mode",
                 daemon=True,
             ).start()
@@ -131,8 +132,9 @@ def main() -> int:
             mic.set_paused(False)
         if prev == "AWAKE" and now != "AWAKE":
             try:
-                from awake.halt import drive_stop, mode_cmd
+                from awake.halt import bump_mode_epoch, drive_stop, mode_cmd
 
+                bump_mode_epoch()
                 drive_stop()
                 if now == "IDLE":
                     mode_cmd("IDLE")

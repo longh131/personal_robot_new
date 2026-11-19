@@ -131,6 +131,33 @@ class Store:
         self._db.commit()
         return cur.rowcount > 0
 
+    def list_valid(self, limit: int = 12) -> list[sqlite3.Row]:
+        limit = max(1, min(50, int(limit)))
+        return list(
+            self._db.execute(
+                "SELECT * FROM facts WHERE valid=1 ORDER BY updated_at DESC LIMIT ?",
+                (limit,),
+            )
+        )
+
+    def search_valid(self, query: str, limit: int = 8) -> list[sqlite3.Row]:
+        tokens = re.findall(r"[\u4e00-\u9fff]{2,}|[a-zA-Z0-9]{2,}", query or "")
+        if not tokens:
+            return self.list_valid(limit)
+        seen: set[int] = set()
+        rows: list[sqlite3.Row] = []
+        for tok in tokens[:6]:
+            like = f"%{tok}%"
+            for row in self._db.execute(
+                "SELECT * FROM facts WHERE valid=1 AND (text LIKE ? OR value LIKE ? OR key LIKE ?) LIMIT 8",
+                (like, like, like),
+            ):
+                rid = int(row["id"])
+                if rid not in seen:
+                    seen.add(rid)
+                    rows.append(row)
+        return rows[:limit]
+
     def prompt_block(self, query: str = "") -> str:
         limit = int(robot_get("memory", "prompt_limit", default=20) or 20)
         rows: list[sqlite3.Row] = []

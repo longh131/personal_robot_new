@@ -1,7 +1,7 @@
 # 已知问题与风险
 
-- 更新日期：2026-10-15（2A 增补）
-- 阶段：Phase 2A 静态核对完成。未做串口或运动复测。
+- 更新日期：2026-11-19（保留历史条目；V1 总览见 `docs/README.md` / `v1_*.md`）
+- 说明：下列编号持续有效。新问题追加编号，勿复用已关闭语义。
 
 ## 安全（高）
 
@@ -96,6 +96,7 @@ MG90S 曾由 UPS USB-A 供电；现多已独立 5V。两轴同时转仍可能欠
 - 候选舵机（名称）：DS3225、Feetech STS3215、WaveShare ST3215、Dynamixel XL430-W250。
 - 候选摄像头（名称）：Raspberry Pi Camera Module 3、Camera Module 3 Wide、Arducam IMX519、Raspberry Pi HQ Camera。
 - 更换后须重测：云台引脚/供电、CSI/`rpicam`、REMOTE 预览与 AWAKE 拍照。
+- 2026-11-19 现场：`dtoverlay=ov5647` 下内核再次 `ov5647 … error -121`，`i2cdetect -y 11` 全空，`rpicam` 报 No cameras——与「时好时坏」一致，偏排线/座子/供电接触，而非仅软件缺失。
 
 ### KI-015 旧 Pi-Robot 架构不兼容
 

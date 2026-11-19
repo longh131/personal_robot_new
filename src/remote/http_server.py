@@ -81,9 +81,10 @@ class RemoteGate:
             self.mic.set_paused(True)
         self.machine.apply(Event.REMOTE_LOGIN)
         self.events.put(Event.REMOTE_LOGIN)
-        # skill_pub first, then MODE via ros2 pub --once (reliable)
+        # skill_pub first; Safety forbids AWAKE→REMOTE without IDLE
         ros_bridge.ensure_skill_pub()
         ros_bridge.set_speed_scale(1.0)
+        ros_bridge.mode_cmd("IDLE")
         ros_bridge.mode_cmd("REMOTE")
         self.media.start_preview()
         gimbal.start()
@@ -193,6 +194,12 @@ def _make_handler(gate: RemoteGate):
                 return self._static("media.js", "application/javascript; charset=utf-8")
             if path == "/static/styles.css":
                 return self._static("styles.css", "text/css; charset=utf-8")
+            if path == "/static/favicon.svg":
+                return self._static("favicon.svg", "image/svg+xml")
+            if path == "/static/favicon.png":
+                return self._static("favicon.png", "image/png")
+            if path in ("/favicon.ico", "/static/favicon.ico"):
+                return self._static("favicon.ico", "image/x-icon")
             if path == "/api/state":
                 authed = self._authed()
                 battery = None

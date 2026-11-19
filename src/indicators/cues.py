@@ -30,6 +30,10 @@ class Cues:
         self.led.denied()
         self.buzzer.beep_denied()
 
+    def chime(self) -> None:
+        """Timer / remind due."""
+        self.buzzer.beep_chime()
+
     def close(self) -> None:
         self.led.close()
         self.buzzer.close()

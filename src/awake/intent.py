@@ -72,9 +72,52 @@ INTENTS: tuple[Intent, ...] = (
     ),
     Intent("volume_unmute", CAT_SYS, 85, ("取消静音", "解除静音")),
     Intent("volume_mute", CAT_SYS, 85, ("静音",)),
+    Intent(
+        "timer_cancel",
+        CAT_ASSIST,
+        88,
+        ("取消倒计时", "取消提醒", "取消闹钟", "关掉提醒", "不要提醒了"),
+    ),
     Intent("time", CAT_QUERY, 80, ("现在时间", "什么时候了", "几点了", "几点", "报时")),
     Intent("date", CAT_QUERY, 80, ("星期几", "今天星期", "几号", "日期")),
     Intent("battery", CAT_QUERY, 80, ("还有电", "电量", "电池")),
+    Intent(
+        "status_camera",
+        CAT_QUERY,
+        78,
+        (
+            "检查一下相机",
+            "检查相机",
+            "看看相机",
+            "相机怎么样",
+            "摄像头怎么样",
+            "相机怎样",
+            "摄像头怎样",
+            "相机好不好",
+            "摄像头好不好",
+            "相机状态",
+            "摄像头状态",
+            "摄像头",
+        ),
+    ),
+    Intent(
+        "status_estop",
+        CAT_QUERY,
+        78,
+        ("急停了吗", "有没有急停", "是不是急停", "急停状态"),
+    ),
+    Intent(
+        "drive_faster",
+        CAT_MOTOR,
+        76,
+        ("走快一点", "再快点", "加速", "快点"),
+    ),
+    Intent(
+        "drive_slower",
+        CAT_MOTOR,
+        76,
+        ("走慢一点", "再慢点", "减速", "慢点"),
+    ),
     Intent(
         "drive",
         CAT_MOTOR,
@@ -99,7 +142,19 @@ INTENTS: tuple[Intent, ...] = (
     Intent("news", CAT_QUERY, 72, ("头条", "热点", "新闻")),
     Intent("alarm", CAT_ASSIST, 70, ("定个闹钟", "定闹钟", "闹钟")),
     Intent("countdown", CAT_ASSIST, 68, ("倒计时", "计时")),
-    Intent("remind", CAT_ASSIST, 66, ("到点提醒", "提醒我", "事件提醒")),
+    Intent("remind", CAT_ASSIST, 66, ("到点提醒", "提醒我", "事件提醒", "分钟后")),
+    Intent(
+        "memory_query",
+        CAT_ASSIST,
+        55,
+        ("我喜欢什么", "记住了什么", "你记得什么", "记得什么", "我的档案"),
+    ),
+    Intent(
+        "memory_forget",
+        CAT_ASSIST,
+        52,
+        ("忘掉", "忘记", "删掉记忆", "别记了"),
+    ),
     Intent("remember", CAT_ASSIST, 50, ("别忘了", "以后叫", "我喜欢", "记住", "记得")),
     Intent("photo", CAT_FUN, 45, ("拍一张", "照张相", "照相", "拍照")),
     Intent(
@@ -135,6 +190,40 @@ def _compact(text: str) -> str:
     return "".join((text or "").split())
 
 
+def _by_name(name: str) -> Intent:
+    for intent in INTENTS:
+        if intent.name == name:
+            return intent
+    raise KeyError(name)
+
+
+def _soft_status(compact: str) -> Intent | None:
+    """Oral variants that pure keyword lists miss (怎样 vs 怎么样, 检查相机…)."""
+    if any(k in compact for k in ("相机", "摄像头", "镜头")):
+        if any(
+            k in compact
+            for k in (
+                "怎样",
+                "怎么样",
+                "如何",
+                "检查",
+                "看看",
+                "状态",
+                "好不好",
+                "能用",
+                "坏了",
+                "可用",
+                "正常",
+            )
+        ):
+            return _by_name("status_camera")
+    if "急停" in compact and any(
+        k in compact for k in ("吗", "呢", "没有", "是否", "状态", "开着", "拉开")
+    ):
+        return _by_name("status_estop")
+    return None
+
+
 def match_intent(text: str) -> Intent | None:
     compact = _compact(text)
     if not compact:
@@ -146,7 +235,9 @@ def match_intent(text: str) -> Intent | None:
                 key = (len(word), intent.weight)
                 if best is None or key > (best[0], best[1]):
                     best = (len(word), intent.weight, intent)
-    return None if best is None else best[2]
+    if best is not None:
+        return best[2]
+    return _soft_status(compact)
 
 
 def named_music_query(text: str) -> str:

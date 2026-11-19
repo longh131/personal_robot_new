@@ -291,6 +291,7 @@ def record_utterance(
     wait_s = float(robot_get("listen", "wait_s", default=8) or 8)
     max_s = float(seconds if seconds is not None else robot_get("listen", "max_s", default=12) or 12)
     silence_s = float(robot_get("listen", "silence_s", default=0.8) or 0.8)
+    min_voiced = float(robot_get("listen", "min_voiced_s", default=0.45) or 0.45)
     rate = 16000
     chunk_n = 512
     chunk_b = chunk_n * 2
@@ -339,17 +340,21 @@ def record_utterance(
                 heard_s += dt
                 if level < thresh:
                     quiet += dt
-                    if quiet >= silence_s and heard_s >= 0.25:
+                    if quiet >= silence_s and heard_s >= min_voiced:
                         break
                 else:
                     quiet = 0.0
         finally:
             _stop_proc(proc)
-        if voiced:
+        if voiced and heard_s >= min_voiced:
             break
-        if proc.returncode in (0, None, -15, -9):
+        if voiced and heard_s < min_voiced:
+            log.info("listen drop short voiced=%.2fs need=%.2fs", heard_s, min_voiced)
+            voiced = False
+            pcm.clear()
+        if proc.returncode in (0, None, -15, -9) and not voiced:
             break
-    if not voiced or len(pcm) < chunk_b:
+    if not voiced or len(pcm) < chunk_b or heard_s < min_voiced:
         log.info("listen no speech")
         return None
     fd, path = tempfile.mkstemp(suffix=".wav", prefix="pr-asr-")
@@ -408,7 +413,10 @@ def asr_once(wav_path: Path, cfg: dict[str, str] | None = None) -> str:
                 if t:
                     parts.append(t)
     text = "".join(parts).strip()
-    log.info("asr chars=%s", len(text))
+    if text:
+        log.info("asr chars=%s", len(text))
+    else:
+        log.info("asr chars=0 (cloud empty; check echo/noise or short utterance)")
     return text
 
 
@@ -467,12 +475,23 @@ def _tts_fetch(text: str, cfg: dict[str, str]) -> tuple[bytes, str]:
             "Content-Type": "application/json",
         },
     )
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            body = json.loads(resp.read().decode())
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", "replace")[:400]
-        raise RuntimeError(f"tts http {exc.code}: {detail}") from exc
+    last_exc: Exception | None = None
+    body: dict | list | None = None
+    for attempt in range(2):
+        try:
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                body = json.loads(resp.read().decode())
+            last_exc = None
+            break
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", "replace")[:400]
+            raise RuntimeError(f"tts http {exc.code}: {detail}") from exc
+        except Exception as exc:
+            last_exc = exc
+            log.warning("tts fetch retry=%s err=%s", attempt, exc)
+            time.sleep(0.4)
+    if last_exc is not None:
+        raise RuntimeError(f"tts timed out: {last_exc}") from last_exc
     output = body.get("output") if isinstance(body, dict) else None
     audio = output.get("audio") if isinstance(output, dict) else None
     raw = b""
@@ -480,7 +499,7 @@ def _tts_fetch(text: str, cfg: dict[str, str]) -> tuple[bytes, str]:
         url = audio.get("url")
         data = audio.get("data")
         if url:
-            with urllib.request.urlopen(str(url), timeout=10) as resp:
+            with urllib.request.urlopen(str(url), timeout=15) as resp:
                 raw = resp.read()
         elif data:
             raw = base64.b64decode(data)
@@ -547,6 +566,8 @@ def tts_say(
     hold_s = float(robot_get("interrupt", "hold_s", default=0.18) or 0.18)
     silence_s = float(robot_get("listen", "silence_s", default=0.8) or 0.8)
     max_s = float(robot_get("listen", "max_s", default=12) or 12)
+    min_voiced = float(robot_get("listen", "min_voiced_s", default=0.45) or 0.45)
+    post_gap = float(robot_get("listen", "post_tts_gap_s", default=0.35) or 0.35)
     rate = 16000
     chunk_n = 512
     chunk_b = chunk_n * 2
@@ -600,6 +621,8 @@ def tts_say(
                     pcm.clear()
                     voiced = False
                     elapsed = 0.0
+                    if post_gap > 0:
+                        time.sleep(post_gap)
                     continue
                 if phase == "listen" and not voiced:
                     elapsed += 0.05
@@ -632,6 +655,8 @@ def tts_say(
                     elapsed = 0.0
                     voiced = False
                     pcm.clear()
+                    if post_gap > 0:
+                        time.sleep(post_gap)
                 continue
             if not voiced:
                 elapsed += dt
@@ -648,7 +673,7 @@ def tts_say(
             heard_s += dt
             if level < listen_th:
                 quiet += dt
-                if quiet >= silence_s and heard_s >= 0.25:
+                if quiet >= silence_s and heard_s >= min_voiced:
                     break
             else:
                 quiet = 0.0
@@ -657,9 +682,11 @@ def tts_say(
         if interrupted:
             log.info("tts interrupted chars=%s pcm=%s", len(text), len(pcm))
         elif voiced:
-            log.info("tts then listen pcm=%s", len(pcm))
-        if voiced and len(pcm) >= chunk_b * 8:
+            log.info("tts then listen pcm=%s voiced=%.2fs", len(pcm), heard_s)
+        if voiced and heard_s >= min_voiced and len(pcm) >= chunk_b * 8:
             return _pcm_wav(bytes(pcm), rate)
+        if voiced and heard_s < min_voiced:
+            log.info("tts then listen drop short voiced=%.2fs", heard_s)
         return None
     finally:
         _stop_proc(cap)

@@ -8,10 +8,14 @@ import json
 import select
 import sys
 import time
+from pathlib import Path
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from std_msgs.msg import Bool, String
+
+OBS_CACHE = Path("/opt/personal_robot/logs/robot_obstacle.json")
+ESTOP_CACHE = Path("/opt/personal_robot/logs/robot_estop.json")
 
 
 class AwakeSkillPub(Node):
@@ -20,11 +24,33 @@ class AwakeSkillPub(Node):
         self.pub = self.create_publisher(String, "/robot/skill_cmd", 10)
         self.mode_pub = self.create_publisher(String, "/robot/mode_cmd", 10)
         self.create_subscription(String, "/robot/mode", self._on_mode, 10)
+        self.create_subscription(String, "/robot/obstacle_status", self._on_obs, 10)
+        self.create_subscription(Bool, "/robot/estop", self._on_estop, 10)
         self._n = 0
         self.last_mode = "IDLE"
+        OBS_CACHE.parent.mkdir(parents=True, exist_ok=True)
 
     def _on_mode(self, msg: String) -> None:
         self.last_mode = (msg.data or "IDLE").strip().upper() or "IDLE"
+
+    def _on_obs(self, msg: String) -> None:
+        try:
+            payload = json.loads(msg.data or "{}")
+            if not isinstance(payload, dict):
+                return
+            payload["ts"] = time.time()
+            OBS_CACHE.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+        except (OSError, json.JSONDecodeError, TypeError):
+            pass
+
+    def _on_estop(self, msg: Bool) -> None:
+        try:
+            ESTOP_CACHE.write_text(
+                json.dumps({"estop": bool(msg.data), "ts": time.time()}, separators=(",", ":")),
+                encoding="utf-8",
+            )
+        except OSError:
+            pass
 
     def set_mode(self, mode: str) -> None:
         m = String()

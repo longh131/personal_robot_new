@@ -18,6 +18,10 @@ listen:
   max_s: 12
   silence_s: 0.8
   rms: 500
+  # ignore too-short bursts (echo/noise) before cloud ASR
+  min_voiced_s: 0.45
+  # after TTS ends, wait before treating mic as user speech
+  post_tts_gap_s: 0.35
 
 interrupt:
   enabled: true
@@ -70,6 +74,8 @@ awake:
   wz_max: 0.35
   # refresh skill_cmd while holding; Bus drive_timeout is 1.0s
   drive_refresh_s: 0.4
+  empty_asr_prompt_n: 2
+  timeout_warn_s: 20
 
 sentry:
   enabled: false

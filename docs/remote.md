@@ -3,7 +3,8 @@
 - 拍照、录像、录音、电量、WebRTC 预览、双向语音。无 ASR/TTS/LLM。
 - 文件：手动 `data/media/remote/photos|videos|recordings`；IDLE 看守 `data/media/remote/sentry/`（封面 jpg + mjpeg + wav）。
 - **查看媒体**：主控页底部「查看媒体」开新窗 `/media.html`。分类含 REMOTE 拍照/录像/录音、sentry、AWAKE 拍照/音乐。登录 Cookie 共用；可预览、下载、删除（二次确认）。路径限制在配置目录内，防穿越。
-- 登录：先 `ensure_skill_pub`，再以 `ros2 topic pub --once /robot/mode_cmd` 切 REMOTE（可靠路径；skill_pub 仅附带 nudge）。监控区 sticky。
+- 登录：`ensure_skill_pub`，再 `mode_cmd IDLE` 然后 `REMOTE`（Safety 禁止 AWAKE 直切 REMOTE；AWAKE 退后若 ROS 仍停在 AWAKE，只发 REMOTE 会 `must_via_idle` 导致网页不能动）。
+- 站点图标：与页头蓝色 `PR` 标一致（`/favicon.ico`、`/static/favicon.svg`）。
 - **限速滑条**：运动区 20%–100%，登录重置 100%；仍受 `remote.vx/vy/wz_max` 硬顶。
 - **障碍物**：监控下方四向距离 + 刹停提示（`/robot/obstacle_status` → skill_pub 缓存）。
 - **会话/链路**：顶栏 RTT + 心跳剩余。
